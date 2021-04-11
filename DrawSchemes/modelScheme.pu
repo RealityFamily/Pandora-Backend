@@ -1,0 +1,19 @@
+@startuml
+entity "User" as u {
+    * uuid <<generated>> <<FK>>
+    --
+    * mail
+    * password
+    * nickname
+    }
+
+entity "3dModel" as m {
+    * uuid <<generated>> <<FK>>
+    --
+    * owner: User
+    * mongo-file-id
+    * photos []
+    * 3dini-file-ref
+    * m
+}
+@enduml
