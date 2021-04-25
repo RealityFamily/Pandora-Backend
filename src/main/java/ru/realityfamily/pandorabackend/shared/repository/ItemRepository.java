@@ -1,7 +1,7 @@
-package ru.realityfamily.pandorabackend.repository;
+package ru.realityfamily.pandorabackend.shared.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import ru.realityfamily.pandorabackend.models.Item;
+import ru.realityfamily.pandorabackend.shared.models.Item;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package ru.realityfamily.pandorabackend.models.gridfs;
+package ru.realityfamily.pandorabackend.shared.models.gridfs;
 
 import lombok.Getter;
 import lombok.Setter;

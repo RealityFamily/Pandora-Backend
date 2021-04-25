@@ -1,33 +1,27 @@
-package ru.realityfamily.pandorabackend.models;
+package ru.realityfamily.pandorabackend.shared.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.bytebuddy.agent.builder.AgentBuilder;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Id;
-import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 @Setter
 @Getter
 @Document(collection = "users")
-public class User {
-
-    @Id
-    String id;
-
+public class User extends BaseMongoTemplate{
     String mail;
-
     String nickname;
-
     Long passwordHash;
-
     Role role;
 
     @DBRef
-    List<Item> assignedItems;
+    Set<Item> assignedItems;
+
+    public User() {
+    }
 
     public User(String mail, String nickname, Long passwordHash, Role role) {
         this.mail = mail;

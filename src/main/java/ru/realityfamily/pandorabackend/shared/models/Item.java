@@ -1,4 +1,4 @@
-package ru.realityfamily.pandorabackend.models;
+package ru.realityfamily.pandorabackend.shared.models;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,29 +6,33 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
 @Document(collection = "items")
-public class Item {
-    @Id
-    private String id;
+public class Item extends BaseMongoTemplate {
+
     private String name;
     private String description;
 
     // mongodb gridFS
-    private List<String> miniPhotoGridFsFileIds;
-    private List<String> photoGridFsFileIds;
-    private List<String> modelGridFsFileIds;
+    private Set<String> miniPhotoGridFsFileIds;
+    private Set<String> photoGridFsFileIds;
+    private Set<String> modelGridFsFileIds; // TODO: save the file size to visualize it for user
+    //
 
     @DBRef
     private User authorReference;
 
+    @DBRef
+    private Set<Category> categories = new HashSet<>();
+
     public Item() {
     }
 
-    public Item(List<String> photoGridFsFileIds, List<String> modelGridFsFileIds, User authorReference) {
+    public Item(Set<String> photoGridFsFileIds, Set<String> modelGridFsFileIds, User authorReference) {
         this.photoGridFsFileIds = photoGridFsFileIds;
         this.modelGridFsFileIds = modelGridFsFileIds;
         this.authorReference = authorReference;
