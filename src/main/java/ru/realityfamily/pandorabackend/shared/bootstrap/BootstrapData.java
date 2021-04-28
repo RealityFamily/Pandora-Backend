@@ -13,10 +13,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.realityfamily.pandorabackend.shared.models.*;
-import ru.realityfamily.pandorabackend.shared.repository.CategoryRepository;
-import ru.realityfamily.pandorabackend.shared.repository.ItemRepository;
-import ru.realityfamily.pandorabackend.shared.repository.SubcategoryRepository;
-import ru.realityfamily.pandorabackend.shared.repository.UserRepository;
+import ru.realityfamily.pandorabackend.shared.repository.*;
 
 import java.io.File;
 import java.util.*;
@@ -28,14 +25,16 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
     UserRepository userRepository;
     CategoryRepository categoryRepository;
     SubcategoryRepository subcategoryRepository;
+    SubtagRepository subtagRepository;
     private User admin;
     private User testUser;
 
-    public BootstrapData(ItemRepository itemRepository, UserRepository userRepository, CategoryRepository categoryRepository, SubcategoryRepository subcategoryRepository) {
+    public BootstrapData(ItemRepository itemRepository, UserRepository userRepository, CategoryRepository categoryRepository, SubcategoryRepository subcategoryRepository, SubtagRepository subtagRepository) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.subcategoryRepository = subcategoryRepository;
+        this.subtagRepository = subtagRepository;
     }
 
     @Override
@@ -101,6 +100,35 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
         categories.add(new Category("Детская", "Категория для добавления новых моделей детских", subcategoriesDetskaya));
 
         saveAllCategoryIfNotExist(categories);
+
+        List<Subtag> mebelStolySubtag = new ArrayList<>();
+        mebelStolySubtag.add(new Subtag("Журнальные", new ArrayList<Item>() {
+            {
+                for(int i = 1; i<11; i++)  add( itemRepository.save(new Item("Item Number"+ i, "There is some description for item number "+ i)));
+            }
+        }));
+        mebelStolySubtag = saveAllSubtagIfNotExist(mebelStolySubtag);
+
+
+        List<Subcategory> subcategoriesMebel = new ArrayList<>();
+        subcategoriesMebel.add(new Subcategory("Столы","подкатегория столов", mebelStolySubtag));
+        subcategoriesMebel.add(new Subcategory("Стулья","подкатегория стульев"));
+        subcategoriesMebel.add(new Subcategory("Шкафы","подкатегория шкафы "));
+        subcategoriesMebel.add(new Subcategory("Стеллажи","Подкатегория стеллажи"));
+        subcategoriesMebel.add(new Subcategory("Комоды","подкатегория Комоды"));
+        subcategoriesMebel.add(new Subcategory("Полки","подкатегория Полки"));
+        subcategoriesMebel.add(new Subcategory("Консоли","подкатегория Консоли"));
+        subcategoriesMebel.add(new Subcategory("Мебель для медиа","подкатегория Мебель для медиа"));
+        subcategoriesMebel.add(new Subcategory("Прихожие","подкатегория прихожие"));
+        subcategoriesMebel.add(new Subcategory("Подставки","подкатегория Подставки"));
+        subcategoriesMebel.add(new Subcategory("Тумбы","подкатегория Тумбы"));
+        subcategoriesMebel.add(new Subcategory("Модульная","подкатегория Модульная"));
+        subcategoriesMebel.add(new Subcategory("Комплекты","подкатегория Комплекты"));
+        subcategoriesMebel.add(new Subcategory("Фурнитура","подкатегория Фурнитура"));
+        subcategoriesMebel = saveAllSubcategoryIfNotExist(subcategoriesMebel);
+        categories.add(new Category("Мебель", "Категория для добавления новых моделей мебели общего назначения", subcategoriesMebel));
+
+        saveAllCategoryIfNotExist(categories);
     }
 
     public <T> List<T> loadObjectList(Class<T> type, String fileName) {
@@ -150,14 +178,22 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
         return subcategoryOutput;
     }
 
-    private <T extends BaseMongoTemplate, R extends MongoRepository> T saveIfNotExist(T object, R repository ){
-        /*Optional<T> op = repository.findById(object.getId());
-        if(op.isPresent()){
-            return op.get();
-        }else {
-            return (T) repository.save(object);
-        }*/
+    private Subtag saveSubtagIfNotExist(Subtag subtag){
+        if(!subtagRepository.exists(Example.of(subtag))){
+            return subtagRepository.save(subtag);
+        }
+        else return subtagRepository.findOne(Example.of(subtag)).get();
+    }
 
+    private List<Subtag> saveAllSubtagIfNotExist(List<Subtag> subcategories){
+        List<Subtag> subtagOutput = new ArrayList<>();
+        for (Subtag c : subcategories){
+            subtagOutput.add(saveSubtagIfNotExist(c));
+        }
+        return subtagOutput;
+    }
+
+    private <T extends BaseMongoTemplate, R extends MongoRepository> T saveIfNotExist(T object, R repository ){
         if(!repository.exists(Example.of(object))){
             return (T) repository.save(object);
         }

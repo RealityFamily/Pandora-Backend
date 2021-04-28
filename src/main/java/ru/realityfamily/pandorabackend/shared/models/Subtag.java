@@ -2,6 +2,7 @@ package ru.realityfamily.pandorabackend.shared.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class Subtag {
     @Id
     String id;
-    String title = "main";
+    String title = "default";
 
     @DBRef
     List<Item> itemList;
@@ -28,8 +29,14 @@ public class Subtag {
         this.title = title;
     }
 
+    @PersistenceConstructor
     public Subtag(String id, String title, List<Item> itemList) {
         this.id = id;
+        this.title = title;
+        this.itemList = itemList;
+    }
+
+    public Subtag(String title, List<Item> itemList) {
         this.title = title;
         this.itemList = itemList;
     }

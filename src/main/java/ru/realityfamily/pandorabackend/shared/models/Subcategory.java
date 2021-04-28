@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
+import java.util.List;
 
 @Document(collection = "subcategory")
 @Getter
@@ -19,7 +20,7 @@ public class Subcategory {
     private String description;
 
     @DBRef
-    private Subtag inlineInterfaceTag;
+    private List<Subtag> inlineInterfaceTag;
 
 
     public Subcategory(String title, String description) {
@@ -32,5 +33,11 @@ public class Subcategory {
         this.id = id;
         this.title = title;
         this.description = description;
+    }
+
+    public Subcategory(String title, String description, List<Subtag> inlineInterfaceTag) {
+        this.title = title;
+        this.description = description;
+        this.inlineInterfaceTag = inlineInterfaceTag;
     }
 }
