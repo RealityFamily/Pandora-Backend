@@ -1,5 +1,6 @@
 package ru.realityfamily.pandorabackend.shared.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -12,10 +13,13 @@ import java.util.Set;
 @Setter
 @Getter
 @Document(collection = "items")
+@AllArgsConstructor
 public class Item extends BaseMongoTemplate {
 
     private String name;
     private String description;
+
+    private ModelAccessStrategy modelAccessStrategy = ModelAccessStrategy.Free;
 
     // mongodb gridFS
     private Set<String> miniPhotoGridFsFileIds;
@@ -32,6 +36,8 @@ public class Item extends BaseMongoTemplate {
     public Item() {
     }
 
+
+
     public Item(Set<String> photoGridFsFileIds, Set<String> modelGridFsFileIds, User authorReference) {
         this.photoGridFsFileIds = photoGridFsFileIds;
         this.modelGridFsFileIds = modelGridFsFileIds;
@@ -45,6 +51,11 @@ public class Item extends BaseMongoTemplate {
 
     public Item(String name) {
         this.name = name;
+    }
+
+    public Item(String name, ModelAccessStrategy modelAccessStrategy) {
+        this.name = name;
+        this.modelAccessStrategy = modelAccessStrategy;
     }
 
     public Item(String name, String description) {

@@ -46,23 +46,23 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
     }
 
     private void loadItem(){
-        Item item1 = new Item("Divan obivan");
+        Item item1 = new Item("Divan obivan", ModelAccessStrategy.Premium);
         item1.setId("6073182a864dbb4531677d3f");
         itemRepository.save(item1);
 
-        item1 = new Item("Stul Barnaul");
+        item1 = new Item("Stul Barnaul", ModelAccessStrategy.Premium);
         item1.setId("6073182a864dbb4531677d40");
         itemRepository.save(item1);
 
-        item1 = new Item("Lustra Balustra");
+        item1 = new Item("Lustra Balustra", ModelAccessStrategy.Premium);
         item1.setId("6073182a864dbb4531677d41");
         itemRepository.save(item1);
 
-        item1 = new Item("Shkaf gav");
+        item1 = new Item("Shkaf gav", ModelAccessStrategy.Premium);
         item1.setId("6073182a864dbb4531677d42");
         itemRepository.save(item1);
 
-        item1 = new Item("Lol kek cheburek");
+        item1 = new Item("Lol kek cheburek", ModelAccessStrategy.Premium);
         saveIfNotExist(item1, itemRepository);
     }
 

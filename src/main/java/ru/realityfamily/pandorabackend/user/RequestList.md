@@ -10,7 +10,8 @@
 }
 ```
 
-###/category/{group}/subgroup `[stable]`
+### /category/{group}/subgroup `[stable]`
+
 Возвращает все подгруппы
 ```json{
     [

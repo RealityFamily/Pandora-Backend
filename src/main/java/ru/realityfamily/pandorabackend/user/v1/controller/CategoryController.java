@@ -9,7 +9,9 @@ import ru.realityfamily.pandorabackend.shared.models.Category;
 import ru.realityfamily.pandorabackend.shared.models.Subcategory;
 import ru.realityfamily.pandorabackend.user.v1.DTO.CategoryDTO;
 import ru.realityfamily.pandorabackend.user.v1.DTO.SubcatFromCatDTO;
+import ru.realityfamily.pandorabackend.user.v1.DTO.SubtagDTO;
 import ru.realityfamily.pandorabackend.user.v1.service.CategoryService;
+import ru.realityfamily.pandorabackend.user.v1.service.CategoryServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,8 @@ public class CategoryController {
     }
 
     @GetMapping("category/{id}")
-    public CategoryDTO getCategotyById(@PathVariable("id") String id){
-        return convertToDTO(categoryService.findCategoryById(id));
+    public Category getCategoryById(@PathVariable("id") String id){
+        return categoryService.findCategoryById(id);
     }
 
     @GetMapping("category/{id}/subcategories")
