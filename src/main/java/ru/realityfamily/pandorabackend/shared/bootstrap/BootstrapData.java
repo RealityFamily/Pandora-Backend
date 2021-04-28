@@ -104,7 +104,7 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
         List<Subtag> mebelStolySubtag = new ArrayList<>();
         mebelStolySubtag.add(new Subtag("Журнальные", new ArrayList<Item>() {
             {
-                for(int i = 1; i<11; i++)  add( itemRepository.save(new Item("Item Number"+ i, "There is some description for item number "+ i)));
+                for(int i = 1; i<11; i++)  add( saveItemIfNotExist(new Item("Item Number"+ i, "There is some description for item number "+ i)));
             }
         }));
         mebelStolySubtag = saveAllSubtagIfNotExist(mebelStolySubtag);
@@ -144,6 +144,23 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
             logger.error("Error occurred while loading object list from file " + fileName, e);
             return Collections.emptyList();
         }
+    }
+
+
+    private List<Item> saveAllItemIfNotExist(List<Item> item){
+        List<Item> itemOutput = new ArrayList<>();
+        for (Item i : item){
+            itemOutput.add(saveItemIfNotExist(i));
+        }
+        return itemOutput;
+    }
+
+    private Item saveItemIfNotExist(Item item){
+        boolean a = itemRepository.exists(Example.of(item));
+        if(!a){
+            return itemRepository.save(item);
+        }
+        else return itemRepository.findOne(Example.of(item)).get();
     }
 
 

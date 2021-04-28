@@ -30,9 +30,6 @@ public class Item extends BaseMongoTemplate {
     @DBRef
     private User authorReference;
 
-    @DBRef
-    private Set<Category> categories = new HashSet<>();
-
     public Item() {
     }
 

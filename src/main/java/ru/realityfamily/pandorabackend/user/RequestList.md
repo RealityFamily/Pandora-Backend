@@ -22,7 +22,7 @@
 }
 ```
 
-### /item/{group}/{sub_group} `[in work]`
+### item/bysubgroup/{subgroup_id} `[stable]`
 Возвращает краткий перечень элементов в подгруппе
 ```json
 {
