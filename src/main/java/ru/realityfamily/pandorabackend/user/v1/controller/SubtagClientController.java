@@ -1,7 +1,6 @@
 package ru.realityfamily.pandorabackend.user.v1.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +9,7 @@ import ru.realityfamily.pandorabackend.shared.models.Item;
 import ru.realityfamily.pandorabackend.shared.models.Subtag;
 import ru.realityfamily.pandorabackend.user.v1.DTO.ItemCardShortDTO;
 import ru.realityfamily.pandorabackend.user.v1.DTO.SubtagDTO;
-import ru.realityfamily.pandorabackend.user.v1.service.SubtagService;
+import ru.realityfamily.pandorabackend.user.v1.service.ISubtagClientService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +17,15 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/client")
-public class SubtagController {
+public class SubtagClientController {
 
-    SubtagService subtagService;
+    ISubtagClientService ISubtagClientService;
 
     @GetMapping("item/bysubgroup/{subgroup_id}")
     public List<SubtagDTO> getSubtagWithItems(@PathVariable("subgroup_id") String subgroupId){
-        return convertSubtagListToSubtagDTOList(subtagService.geSubtagWithItems(subgroupId));
+        return convertSubtagListToSubtagDTOList(ISubtagClientService.geSubtagWithItems(subgroupId));
     }
+
 
     private List<SubtagDTO> convertSubtagListToSubtagDTOList(List<Subtag> subtags){
         List<SubtagDTO> subtagDTOS = new ArrayList<>();

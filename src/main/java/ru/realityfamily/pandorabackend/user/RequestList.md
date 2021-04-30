@@ -38,7 +38,7 @@
 ### /item/{id}/photo/small `[in work]`
 Возвращает маленькую фотку модели
 
-### /item/{id} `[in work]`
+### /item/{id} `[not tested]`
 Возвращает подробную информацию о модели
 
 ``` json

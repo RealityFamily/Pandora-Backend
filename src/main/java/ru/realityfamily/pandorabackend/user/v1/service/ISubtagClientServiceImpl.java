@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class SubtagServiceImpl implements SubtagService{
+public class ISubtagClientServiceImpl implements ISubtagClientService {
 
     SubcategoryRepository subcategoryRepository;
 
