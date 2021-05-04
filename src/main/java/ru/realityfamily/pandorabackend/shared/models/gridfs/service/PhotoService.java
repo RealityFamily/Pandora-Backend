@@ -16,6 +16,7 @@ import ru.realityfamily.pandorabackend.shared.models.gridfs.Photo;
 import ru.realityfamily.pandorabackend.shared.models.gridfs.PhotoSize;
 
 import java.io.IOException;
+import java.util.Set;
 
 @AllArgsConstructor
 @Component
@@ -54,5 +55,6 @@ public class PhotoService {
         );
         return id.toString();
     }
+
 
 }

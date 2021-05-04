@@ -35,7 +35,7 @@
 }
 ```
 
-### /item/{id}/photo/small `[in work]`
+### /item/{id}/photo/small `[stable]`
 Возвращает маленькую фотку модели
 
 ### /item/{id} `[stable]`
