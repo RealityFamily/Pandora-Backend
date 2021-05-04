@@ -55,7 +55,7 @@ authorReference: ""
 ### /item/{id}/photo/large `[stable]`
 Возвращает большую фотку/фотки модели
 
-### /item/{id}/download `[in work]`
+### /item/{id}/download `[stable]`
 ```
 скачка ZIP по запросу
 ```
