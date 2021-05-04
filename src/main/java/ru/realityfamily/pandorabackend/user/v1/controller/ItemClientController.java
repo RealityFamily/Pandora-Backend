@@ -37,6 +37,13 @@ public class ItemClientController {
 //        response.addHeader("photoName", selectedItem.getName());
     }
 
+    @GetMapping("item/{item_id}/photo/large")
+    public void getItemLargePhotoByItemId(@PathVariable("item_id") String itemId, HttpServletResponse response) throws IllegalStateException, IOException {
+        Item selectedItem = itemClientService.getItemById(itemId);
+        Photo photo = photoService.getPhoto(selectedItem.getPhotoGridFsFileIds().iterator().next()); // TODO: refactor. It's not good because get's only first element from set
+        FileCopyUtils.copy(photo.getStream(), response.getOutputStream());
+    }
+
     private ItemCardLongDTO convertItemToItemCardLongDTO(Item itemById) {
         return  new ItemCardLongDTO(itemById.getId(), itemById.getName(),itemById.getDescription(),itemById.getSizeInByte(),
                 itemById.getAuthorReference().getNickname(), itemById.getAuthorReference().getMail());

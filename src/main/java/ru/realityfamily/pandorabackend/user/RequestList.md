@@ -52,7 +52,7 @@ authorReference: ""
 }
 ```
 
-### /item/{id}/photo/large `[in work]`
+### /item/{id}/photo/large `[stable]`
 Возвращает большую фотку/фотки модели
 
 ### /item/{id}/download `[in work]`
