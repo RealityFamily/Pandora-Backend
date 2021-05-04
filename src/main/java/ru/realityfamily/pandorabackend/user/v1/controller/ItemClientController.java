@@ -22,7 +22,7 @@ public class ItemClientController {
     }
 
     private ItemCardLongDTO convertItemToItemCardLongDTO(Item itemById) {
-        return  new ItemCardLongDTO(itemById.getId(), itemById.getName(),itemById.getDescription(),
+        return  new ItemCardLongDTO(itemById.getId(), itemById.getName(),itemById.getDescription(),itemById.getSizeInByte(),
                 itemById.getAuthorReference().getNickname(), itemById.getAuthorReference().getMail());
     }
 

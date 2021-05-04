@@ -38,16 +38,17 @@
 ### /item/{id}/photo/small `[in work]`
 Возвращает маленькую фотку модели
 
-### /item/{id} `[not tested]`
+### /item/{id} `[stable]`
 Возвращает подробную информацию о модели
 
 ``` json
 {
-    id : "",
-    name : "",
-    description : "",
-    author : "",
-    authorURL : ""
+id: "",
+name: "",
+description: "",
+modelSize: 8803372,
+authorNick: "",
+authorReference: ""
 }
 ```
 

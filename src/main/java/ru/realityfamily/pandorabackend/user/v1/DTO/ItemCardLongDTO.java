@@ -11,6 +11,7 @@ public class ItemCardLongDTO {
     private String id;
     private String name;
     private String description;
+    private int modelSize;
 
     private String authorNick;
     private String authorReference;
