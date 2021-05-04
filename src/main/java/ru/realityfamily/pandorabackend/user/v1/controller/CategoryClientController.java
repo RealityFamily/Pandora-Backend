@@ -9,9 +9,8 @@ import ru.realityfamily.pandorabackend.shared.models.Category;
 import ru.realityfamily.pandorabackend.shared.models.Subcategory;
 import ru.realityfamily.pandorabackend.user.v1.DTO.CategoryDTO;
 import ru.realityfamily.pandorabackend.user.v1.DTO.SubcatFromCatDTO;
-import ru.realityfamily.pandorabackend.user.v1.DTO.SubtagDTO;
-import ru.realityfamily.pandorabackend.user.v1.service.CategoryService;
-import ru.realityfamily.pandorabackend.user.v1.service.CategoryServiceImpl;
+import ru.realityfamily.pandorabackend.user.v1.service.ICategoryClientService;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,23 +18,23 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/client")
-public class CategoryController {
+public class CategoryClientController {
 
-    CategoryService categoryService;
+    ICategoryClientService ICategoryClientService;
 
     @GetMapping("category/all") // возвращает все категории левого основного списка айтемов
     public List<CategoryDTO> getCategories(){
-        return  convertListToDTO(categoryService.findAllCategories());
+        return  convertListToDTO(ICategoryClientService.findAllCategories());
     }
 
     @GetMapping("category/{id}")
     public Category getCategoryById(@PathVariable("id") String id){
-        return categoryService.findCategoryById(id);
+        return ICategoryClientService.findCategoryById(id);
     }
 
     @GetMapping("category/{id}/subcategories")
     public List<SubcatFromCatDTO> getSubcategoryFromCategory(@PathVariable("id") String id){
-        return convertCatToSubCatFromCatDTO(categoryService.findAllSubcategoriesFromCategory(id));
+        return convertCatToSubCatFromCatDTO(ICategoryClientService.findAllSubcategoriesFromCategory(id));
     }
 
 

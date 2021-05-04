@@ -11,8 +11,7 @@ public class Model3d extends BaseGridFsFile {
     public Model3d(String name) {
         super();
         this.setFileTitle(name);
-        this.setFileType("3dmodel");
-        this.setFileType("7z");
+        this.setFileType(FileType.Model);
     }
 
     public Model3d() {

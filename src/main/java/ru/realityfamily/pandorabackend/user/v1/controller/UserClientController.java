@@ -8,11 +8,11 @@ import ru.realityfamily.pandorabackend.shared.models.User;
 import ru.realityfamily.pandorabackend.shared.repository.UserRepository;
 
 @RestController
-public class UserController {
+public class UserClientController {
 
     private UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
+    public UserClientController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

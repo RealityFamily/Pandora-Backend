@@ -24,7 +24,8 @@ public class Item extends BaseMongoTemplate {
     // mongodb gridFS
     private Set<String> miniPhotoGridFsFileIds;
     private Set<String> photoGridFsFileIds;
-    private Set<String> modelGridFsFileIds; // TODO: save the file size to visualize it for user
+    private Set<String> modelGridFsFileIds;
+    private int sizeInByte;
     //
 
     @DBRef

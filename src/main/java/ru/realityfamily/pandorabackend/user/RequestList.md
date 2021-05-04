@@ -35,26 +35,27 @@
 }
 ```
 
-### /item/{id}/photo/small `[in work]`
+### /item/{id}/photo/small `[stable]`
 Возвращает маленькую фотку модели
 
-### /item/{id} `[in work]`
+### /item/{id} `[stable]`
 Возвращает подробную информацию о модели
 
 ``` json
 {
-    id : "",
-    name : "",
-    description : "",
-    author : "",
-    authorURL : ""
+id: "",
+name: "",
+description: "",
+modelSize: 8803372,
+authorNick: "",
+authorReference: ""
 }
 ```
 
-### /item/{id}/photo/large `[in work]`
+### /item/{id}/photo/large `[stable]`
 Возвращает большую фотку/фотки модели
 
-### /item/{id}/download `[in work]`
+### /item/{id}/download `[stable]`
 ```
 скачка ZIP по запросу
 ```

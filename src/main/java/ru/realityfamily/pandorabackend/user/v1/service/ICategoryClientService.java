@@ -5,7 +5,7 @@ import ru.realityfamily.pandorabackend.shared.models.Subcategory;
 
 import java.util.List;
 
-public interface CategoryService {
+public interface ICategoryClientService {
      public List<Category> findAllCategories();
 
     public Category findCategoryById(String id);

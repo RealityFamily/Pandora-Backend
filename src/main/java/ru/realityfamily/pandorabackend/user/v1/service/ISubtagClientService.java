@@ -4,7 +4,7 @@ import ru.realityfamily.pandorabackend.shared.models.Subtag;
 
 import java.util.List;
 
-public interface SubtagService {
+public interface ISubtagClientService {
 
     public List<Subtag> geSubtagWithItems(String subgroupId);
 }
