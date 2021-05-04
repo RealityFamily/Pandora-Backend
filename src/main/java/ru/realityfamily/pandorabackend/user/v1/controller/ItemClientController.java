@@ -57,8 +57,14 @@ public class ItemClientController {
 
 
     private ItemCardLongDTO convertItemToItemCardLongDTO(Item itemById) {
+        String nicknameOfAuthor = "No author";
+        String mailOfAuthor = "No mail of author";
+        if(itemById.getAuthorReference() != null){
+            nicknameOfAuthor = itemById.getAuthorReference().getNickname();
+            mailOfAuthor = itemById.getAuthorReference().getMail();
+        }
         return  new ItemCardLongDTO(itemById.getId(), itemById.getName(),itemById.getDescription(),itemById.getSizeInByte(),
-                itemById.getAuthorReference().getNickname(), itemById.getAuthorReference().getMail());
+                nicknameOfAuthor, mailOfAuthor);
     }
 
 }
