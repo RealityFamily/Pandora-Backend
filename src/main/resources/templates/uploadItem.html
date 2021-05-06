@@ -4,60 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <title>Загрузка модели в Pandora</title>
-    <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet" />
+    <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet"/>
 </head>
 
 <body>
 
 <div class="container">
 
-<form id="form" method="POST" action="add" enctype="multipart/form-data">
-    <h3>Загрузить новую модель в Pandora</h3>
-    <h4>Пожалуйста заполните все данные в форме</h4>
+    <form id="form" method="POST" action="add" enctype="multipart/form-data">
+        <h3>Загрузить новую модель в Pandora</h3>
+        <h4>Пожалуйста заполните все данные в форме</h4>
 
-    <fieldset>
-    Название модели:<input type="text" name="itemName" required/>
-    </fieldset>
+        <fieldset>
+            Название модели:<input type="text" name="itemName" required/>
+        </fieldset>
 
-    <fieldset>
-    Описание модели:<input type="text" name="description" required/>
-    </fieldset>
+        <fieldset>
+            Описание модели:<input type="text" name="description" required/>
+        </fieldset>
 
-    <fieldset>
-    Политика доступа к модели:<select size="3" name="modelAccessStrategy" required>
-    <option disabled>Выберите тип доступа</option>
-    <option value="Free" selected>Бесплатно и доступно всем</option>
-    <option value="Premium">Доступно только по подписке</option>
-</select>
-    </fieldset>
+        <fieldset>
+            Политика доступа к модели:<select size="3" name="modelAccessStrategy" required>
+            <option disabled>Выберите тип доступа</option>
+            <option value="Free" selected>Бесплатно и доступно всем</option>
+            <option value="Premium">Доступно только по подписке</option>
+        </select>
+        </fieldset>
 
-    <fieldset>
-    Большая фотография:<input type="file" name="photoLarge" accept="image/jpeg,image/jpg" required/>
-    </fieldset>
+        <fieldset>
+            Большая фотография:<input type="file" name="photoLarge" accept="image/jpeg,image/jpg" required/>
+        </fieldset>
 
-    <fieldset>
-    Маленькая фотография:<input type="file" name="photoSmall" accept="image/jpeg,image/jpg" required/>
-    </fieldset>
+        <fieldset>
+            Маленькая фотография:<input type="file" name="photoSmall" accept="image/jpeg,image/jpg" required/>
+        </fieldset>
 
-    <fieldset>
-    Zip файл с Моделью и всем контентом для нее:<input type="file" name="3dmodel" accept="application/zip" required/>
-    </fieldset>
+        <fieldset>
+            Zip файл с Моделью и всем контентом для нее:<input type="file" name="3dmodel" accept="application/zip"
+                                                               required/>
+        </fieldset>
 
-    <fieldset>
-	Id subtag:<input type="text" name="subtagid" required/>
-    </fieldset>
+        <fieldset>
+            Id subtag:<input type="text" name="subtagid" required/>
+        </fieldset>
 
-    <fieldset>
-	Id user который является автором модели:<input type="text" name="authorid" required/>
-    </fieldset>
+        <fieldset>
+            Id user который является автором модели:<input type="text" name="authorid" required/>
+        </fieldset>
 
-    <fieldset>
-        <button name="submit" type="submit" id="form-submit" >Загрузить</button>
-    </fieldset>
+        <fieldset>
+            <button name="submit" type="submit" id="form-submit">Загрузить</button>
+        </fieldset>
 
-    <p class="copyright">Designed by <a href="https://realityfamily.ru" target="_blank" title="RealityFamily">RealityFamily</a></p>
-</form>
+        <p class="copyright">Designed by <a href="https://realityfamily.ru" target="_blank" title="RealityFamily">RealityFamily</a>
+        </p>
+    </form>
 
-    </div>
+</div>
 </body>
 </html>
