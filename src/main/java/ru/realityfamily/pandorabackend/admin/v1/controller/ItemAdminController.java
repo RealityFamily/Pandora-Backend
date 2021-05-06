@@ -1,6 +1,7 @@
 package ru.realityfamily.pandorabackend.admin.v1.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.realityfamily.pandorabackend.shared.models.Item;
@@ -55,7 +56,8 @@ public class ItemAdminController {
         item = itemRepository.save(item);
         //// TODO: refactor it to service layer
 
-
         return item;
     }
+
+
 }
