@@ -1,7 +1,7 @@
 FROM adoptopenjdk:11-jdk-openj9 AS build
 COPY --chown=1000 . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN chmod 777 *
+RUN chmod 777 ./*
 RUN ./gradlew assemble
 
 FROM adoptopenjdk:11-jre-openj9
