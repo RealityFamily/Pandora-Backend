@@ -12,4 +12,5 @@ public interface ICategoryClientService {
 
     public List<Subcategory> findAllSubcategoriesFromCategory(String id);
 
+    List<Category> getAllCategorys();
 }
