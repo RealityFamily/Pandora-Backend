@@ -7,6 +7,10 @@
 	<h1>Home Page</h1>
 	<div th:if="${message != null}" th:text="${message}">Message</div>
 	<br/><br/>
-	<a href="/item/upload">Upload new Item</a>
+	<a href="api/v1/admin/item/upload">Upload new Item</a>
+	<br/>
+	<a href="api/v1/admin/item/all">View all category's</a>
+	<br/>
+	<a href="api/v1/admin/category/detailed">View all Items</a>
 </body>
 </html>
