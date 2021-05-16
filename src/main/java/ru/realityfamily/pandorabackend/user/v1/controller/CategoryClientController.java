@@ -32,7 +32,7 @@ public class CategoryClientController {
         return ICategoryClientService.findCategoryById(id);
     }
 
-    @GetMapping("category/{id}/subcategories")
+    @GetMapping("category/{id}/subcategories") // возвращает все подкатегории по заданной категории
     public List<SubcatFromCatDTO> getSubcategoryFromCategory(@PathVariable("id") String id){
         return convertCatToSubCatFromCatDTO(ICategoryClientService.findAllSubcategoriesFromCategory(id));
     }

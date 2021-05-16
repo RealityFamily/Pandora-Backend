@@ -2,11 +2,9 @@ package ru.realityfamily.pandorabackend.user.v1.controller;
 
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.jni.File;
+import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.realityfamily.pandorabackend.shared.models.Item;
 import ru.realityfamily.pandorabackend.shared.models.gridfs.Model3d;
 import ru.realityfamily.pandorabackend.shared.models.gridfs.Photo;
@@ -32,19 +30,19 @@ public class ItemClientController {
         return convertItemToItemCardLongDTO(itemClientService.getItemById(id));
     }
 
-    @GetMapping("item/{item_id}/photo/small")
-    public void getItemSmallPhotoByItemId(@PathVariable("item_id") String itemId, HttpServletResponse response) throws IllegalStateException, IOException {
+    @GetMapping(value = "item/{item_id}/photo/small", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[]
+    getItemSmallPhotoByItemId(@PathVariable("item_id") String itemId) throws IllegalStateException, IOException {
         Item selectedItem = itemClientService.getItemById(itemId);
         Photo photo = photoService.getPhoto(selectedItem.getMiniPhotoGridFsFileIds().iterator().next()); // TODO: refactor. It's not good because get's only first element from set
-        FileCopyUtils.copy(photo.getStream(), response.getOutputStream());
-//        response.addHeader("photoName", selectedItem.getName());
+        return photo.getStream().readAllBytes();
     }
 
-    @GetMapping("item/{item_id}/photo/large")
-    public void getItemLargePhotoByItemId(@PathVariable("item_id") String itemId, HttpServletResponse response) throws IllegalStateException, IOException {
+    @GetMapping(value = "item/{item_id}/photo/large", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getItemLargePhotoByItemId(@PathVariable("item_id") String itemId) throws IllegalStateException, IOException {
         Item selectedItem = itemClientService.getItemById(itemId);
         Photo photo = photoService.getPhoto(selectedItem.getPhotoGridFsFileIds().iterator().next()); // TODO: refactor. It's not good because get's only first element from set
-        FileCopyUtils.copy(photo.getStream(), response.getOutputStream());
+        return photo.getStream().readAllBytes();
     }
 
 
