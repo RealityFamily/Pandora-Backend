@@ -46,11 +46,11 @@ public class ItemClientController {
     }
 
 
-    @GetMapping("item/{item_id}/download")
-    public void getItemModel3dByItemId(@PathVariable("item_id") String itemId, HttpServletResponse response) throws IllegalStateException, IOException {
+    @GetMapping(value = "item/{item_id}/download", produces = "application/zip")
+    public byte[] getItemModel3dByItemId(@PathVariable("item_id") String itemId) throws IllegalStateException, IOException {
         Item selectedItem = itemClientService.getItemById(itemId);
         Model3d model = model3dService.getModel3d(selectedItem.getModelGridFsFileIds().iterator().next()); // TODO: refactor. It's not good because get's only first element from set
-        FileCopyUtils.copy(model.getStream(), response.getOutputStream());
+        return model.getStream().readAllBytes();
     }
 
 
