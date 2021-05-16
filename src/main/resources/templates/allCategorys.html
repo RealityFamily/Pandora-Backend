@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Category's Detailed</title>
+</head>
+<body>
+
+<table>
+  <tr>
+    <th>id</th>
+    <th>title</th>
+    <th>Description</th>
+    <th>subcategorys</th>
+  </tr>
+  <tr th:each="category : ${categorys}">
+    <td th:text="${category.id}"></td>
+    <td th:text="${category.title}"></td>
+    <td th:text="${category.description}"></td>
+    <td th:text="${category.subcategorys}"></td>
+  </tr>
+  <table>
+
+
+</body>
+</html>

@@ -24,4 +24,9 @@ public class ICategoryClientServiceImpl implements ICategoryClientService {
     public List<Subcategory> findAllSubcategoriesFromCategory(String id) {
         return categoryRepository.findById(id).get().getSubcategorys();
     }
+
+    @Override
+    public List<Category> getAllCategorys() {
+        return categoryRepository.findAll();
+    }
 }
