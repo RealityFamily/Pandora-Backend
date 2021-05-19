@@ -50,9 +50,9 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
         String username = null;
         String jwtToken = null;
 
-        String requsetURI = request.getRequestURI();
+        String requestURI = request.getRequestURI();
 
-       if(!(requsetURI.equals(getTokenUrl) ||  requsetURI.equals(refreshTokenUrl)) ) {
+       if(!(requestURI.equals(getTokenUrl) ||  requestURI.equals(refreshTokenUrl)) ) {
             if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
                 jwtToken = requestTokenHeader.substring(7);
                 try {

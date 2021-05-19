@@ -85,11 +85,12 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .ignoring()
             .antMatchers(
                 HttpMethod.GET,
-                "/", "/api/v1/admin/item/upload", "/api/v1/admin/item/all", "/api/v1/admin/category/detailed" //Other Stuff You want to Ignore
+                "/", "/api/v1/admin/*" //Other Stuff You want to Ignore
             )
             .and()
             .ignoring()
             .antMatchers("/h2-console/**/**");//Should not be in Production!
+
 
 
     }

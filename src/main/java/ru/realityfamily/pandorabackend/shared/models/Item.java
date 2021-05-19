@@ -56,6 +56,19 @@ public class Item extends BaseMongoTemplate {
         this.modelAccessStrategy = modelAccessStrategy;
     }
 
+    public Item(String name, ModelAccessStrategy modelAccessStrategy, User authorReference) {
+        this.name = name;
+        this.modelAccessStrategy = modelAccessStrategy;
+        this.authorReference = authorReference;
+    }
+
+    public Item(String name, String description, ModelAccessStrategy modelAccessStrategy, User authorReference) {
+        this.name = name;
+        this.description = description;
+        this.modelAccessStrategy = modelAccessStrategy;
+        this.authorReference = authorReference;
+    }
+
     public Item(String name, String description) {
         this.name = name;
         this.description = description;
