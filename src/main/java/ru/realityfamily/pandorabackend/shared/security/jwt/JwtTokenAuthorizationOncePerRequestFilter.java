@@ -35,6 +35,12 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     @Value("${jwt.http.request.header}")
     private String tokenHeader;
 
+    @Value("${jwt.get.token.uri}")
+    private String getTokenUrl;
+
+    @Value("${jwt.refresh.token.uri}")
+    private String refreshTokenUrl;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         logger.debug("Authentication Request For '{}'", request.getRequestURL());
@@ -43,17 +49,22 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
         String username = null;
         String jwtToken = null;
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-            } catch (IllegalArgumentException e) {
-                logger.error("JWT_TOKEN_UNABLE_TO_GET_USERNAME", e);
-            } catch (ExpiredJwtException e) {
-                logger.warn("JWT_TOKEN_EXPIRED", e);
+
+        String requsetURI = request.getRequestURI();
+
+       if(!(requsetURI.equals(getTokenUrl) ||  requsetURI.equals(refreshTokenUrl)) ) {
+            if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+                jwtToken = requestTokenHeader.substring(7);
+                try {
+                    username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                } catch (IllegalArgumentException e) {
+                    logger.error("JWT_TOKEN_UNABLE_TO_GET_USERNAME", e);
+                } catch (ExpiredJwtException e) {
+                    logger.warn("JWT_TOKEN_EXPIRED", e);
+                }
+            } else {
+                logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
             }
-        } else {
-            logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
         }
 
         logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
