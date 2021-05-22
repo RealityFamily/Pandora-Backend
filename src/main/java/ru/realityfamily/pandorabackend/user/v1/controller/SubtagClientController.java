@@ -22,35 +22,36 @@ public class SubtagClientController {
     ISubtagClientService ISubtagClientService;
 
     @GetMapping("item/bysubgroup/{subgroup_id}")
-    public List<SubtagDTO> getSubtagWithItems(@PathVariable("subgroup_id") String subgroupId){
+    public List<SubtagDTO> getSubtagWithItems(@PathVariable("subgroup_id") String subgroupId) {
         return convertSubtagListToSubtagDTOList(ISubtagClientService.geSubtagWithItems(subgroupId));
     }
 
 
-    private List<SubtagDTO> convertSubtagListToSubtagDTOList(List<Subtag> subtags){
+    private List<SubtagDTO> convertSubtagListToSubtagDTOList(List<Subtag> subtags) {
         List<SubtagDTO> subtagDTOS = new ArrayList<>();
-        for(Subtag s : subtags){
-            subtagDTOS.add(convertSubtagToSubtagDTO(s));
+        if (subtags != null) {
+            for (Subtag s : subtags) {
+                subtagDTOS.add(convertSubtagToSubtagDTO(s));
+            }
         }
         return subtagDTOS;
     }
 
-    private ItemCardShortDTO convertItemToItemCardShortDTO (Item item){
+    private ItemCardShortDTO convertItemToItemCardShortDTO(Item item) {
         return new ItemCardShortDTO(item);
     }
 
-    private List<ItemCardShortDTO> convertAllItemToItemCardShortDTO (List<Item> itemList){
+    private List<ItemCardShortDTO> convertAllItemToItemCardShortDTO(List<Item> itemList) {
         List<ItemCardShortDTO> itemCardShortDTOS = new ArrayList<>();
-        for(Item i : itemList){
+        for (Item i : itemList) {
             itemCardShortDTOS.add(convertItemToItemCardShortDTO(i));
         }
         return itemCardShortDTOS;
     }
 
-    private SubtagDTO convertSubtagToSubtagDTO(Subtag subtag){
-        return  new SubtagDTO(subtag.getId(), subtag.getTitle(), convertAllItemToItemCardShortDTO(subtag.getItemList()));
+    private SubtagDTO convertSubtagToSubtagDTO(Subtag subtag) {
+        return new SubtagDTO(subtag.getId(), subtag.getTitle(), convertAllItemToItemCardShortDTO(subtag.getItemList()));
     }
-
 
 
 }

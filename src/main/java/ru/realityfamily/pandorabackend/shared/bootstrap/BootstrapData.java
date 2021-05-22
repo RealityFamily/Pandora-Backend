@@ -18,7 +18,7 @@ import ru.realityfamily.pandorabackend.shared.repository.*;
 import java.io.File;
 import java.util.*;
 
-@Component
+//@Component
 public class BootstrapData implements ApplicationListener<ContextRefreshedEvent> {
 
     ItemRepository itemRepository;
