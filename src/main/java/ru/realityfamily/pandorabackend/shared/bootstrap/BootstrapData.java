@@ -18,7 +18,7 @@ import ru.realityfamily.pandorabackend.shared.repository.*;
 import java.io.File;
 import java.util.*;
 
-@Component
+//@Component
 public class BootstrapData implements ApplicationListener<ContextRefreshedEvent> {
 
     ItemRepository itemRepository;
@@ -28,6 +28,7 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
     SubtagRepository subtagRepository;
     private User admin;
     private User testUser;
+    private List<Item> debugItemList = new ArrayList<>();
 
     public BootstrapData(ItemRepository itemRepository, UserRepository userRepository, CategoryRepository categoryRepository, SubcategoryRepository subcategoryRepository, SubtagRepository subtagRepository) {
         this.itemRepository = itemRepository;
@@ -40,29 +41,29 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        loadItem();
         loadAllDebugUsers();
+        loadItem();
         loadAllDebugCategoriesAndSubcategories();
     }
 
     private void loadItem(){
-        Item item1 = new Item("Divan obivan", ModelAccessStrategy.Premium);
+        Item item1 = new Item("Divan obivan", ModelAccessStrategy.Premium, admin);
         item1.setId("6073182a864dbb4531677d3f");
-        itemRepository.save(item1);
+        debugItemList.add(itemRepository.save(item1));
 
-        item1 = new Item("Stul Barnaul", ModelAccessStrategy.Premium);
+        item1 = new Item("Stul Barnaul", ModelAccessStrategy.Premium, admin);
         item1.setId("6073182a864dbb4531677d40");
-        itemRepository.save(item1);
+        debugItemList.add(itemRepository.save(item1));
 
-        item1 = new Item("Lustra Balustra", ModelAccessStrategy.Premium);
+        item1 = new Item("Lustra Balustra", ModelAccessStrategy.Premium, admin);
         item1.setId("6073182a864dbb4531677d41");
-        itemRepository.save(item1);
+        debugItemList.add(itemRepository.save(item1));
 
-        item1 = new Item("Shkaf gav", ModelAccessStrategy.Premium);
+        item1 = new Item("Shkaf gav", ModelAccessStrategy.Premium, admin);
         item1.setId("6073182a864dbb4531677d42");
-        itemRepository.save(item1);
+        debugItemList.add(itemRepository.save(item1));
 
-        item1 = new Item("Lol kek cheburek", ModelAccessStrategy.Premium);
+        item1 = new Item("Lol kek cheburek", ModelAccessStrategy.Premium, admin);
         saveIfNotExist(item1, itemRepository);
     }
 
@@ -104,7 +105,7 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
         List<Subtag> mebelStolySubtag = new ArrayList<>();
         mebelStolySubtag.add(new Subtag("Журнальные", new ArrayList<Item>() {
             {
-                for(int i = 1; i<11; i++)  add( saveItemIfNotExist(new Item("Item Number"+ i, "There is some description for item number "+ i)));
+                for(int i = 1; i<11; i++)  add( saveItemIfNotExist(new Item("Item Number"+ i, "There is some description for item number "+ i, ModelAccessStrategy.Free, testUser)));
             }
         }));
         mebelStolySubtag = saveAllSubtagIfNotExist(mebelStolySubtag);
