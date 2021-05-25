@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.realityfamily.pandorabackend.shared.models.Item;
 import ru.realityfamily.pandorabackend.shared.models.ModelAccessStrategy;
+import ru.realityfamily.pandorabackend.shared.models.Subtag;
 import ru.realityfamily.pandorabackend.shared.models.User;
 import ru.realityfamily.pandorabackend.shared.models.gridfs.PhotoSize;
 import ru.realityfamily.pandorabackend.shared.models.gridfs.service.Model3dService;
 import ru.realityfamily.pandorabackend.shared.models.gridfs.service.PhotoService;
 import ru.realityfamily.pandorabackend.shared.repository.ItemRepository;
+import ru.realityfamily.pandorabackend.shared.repository.SubtagRepository;
 import ru.realityfamily.pandorabackend.shared.repository.UserRepository;
 
 import java.io.IOException;
@@ -25,6 +27,7 @@ public class ItemAdminController {
     private Model3dService model3dService;
     private UserRepository userRepository; // TODO: refactor it to service layer
     private ItemRepository itemRepository; // TODO: refactor it to service layer
+    private SubtagRepository subtagRepository; // TODO: refactor it to service layer
 
     @PostMapping("item/add")
     public Item addItem(@RequestParam("itemName") String itemName,
@@ -54,6 +57,11 @@ public class ItemAdminController {
         User user = userRepository.findById(authorId).get();
         Item item = new Item(itemName, itemDescription, modelAccessStrategy, photoSmallIdS,photoLargeIdS, model3dIdS, model3d.getBytes().length, user);
         item = itemRepository.save(item);
+
+        Subtag subtag = subtagRepository.findById(subtagId).get();
+        subtag.getItemList().add(item);
+        subtagRepository.save(subtag);
+
         //// TODO: refactor it to service layer
 
         return item;

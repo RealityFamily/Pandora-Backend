@@ -78,8 +78,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers(
                         HttpMethod.POST,
-                        authenticationPath,
-                        "/api/v1/admin/item/add"
+                        authenticationPath
                 )
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .and()
