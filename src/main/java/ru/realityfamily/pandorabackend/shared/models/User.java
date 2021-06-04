@@ -36,12 +36,12 @@ public class User extends BaseMongoTemplate{
         this.passwordHash = passwordHash;
     }
 
-    public User(String mail, Long passwordHash) {
+/*    public User(String mail, Long passwordHash) {
         this.mail = mail;
         this.passwordHash = passwordHash;
         this.role = Role.User;
         this.nickname = mail.toLowerCase(Locale.ROOT).split("@")[0]; // removes everything right from @ char. List it like it is our username
-    }
+    }*/
 
     @Override
     public String toString() {
