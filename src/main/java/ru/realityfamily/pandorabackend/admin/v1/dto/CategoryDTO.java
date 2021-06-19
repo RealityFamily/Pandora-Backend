@@ -23,6 +23,7 @@ public class CategoryDTO {
     public CategoryDTO(Category category) {
         this.id = category.getId();
         this.title = category.getTitle();
+        if(category.getSubcategorys()!= null)
         this.subcategorys = category.getSubcategorys().stream().map(subcategory -> new SubCatDTO(subcategory)).collect(Collectors.toList());
     }
 }

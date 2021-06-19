@@ -1,6 +1,7 @@
 package ru.realityfamily.pandorabackend.shared.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -12,10 +13,11 @@ import java.util.List;
 @Getter
 @Setter
 @Document(collection = "subtag")
+@NoArgsConstructor
 public class Subtag {
     @Id
     String id;
-    String title = "default";
+    String title;
 
     @DBRef
     List<Item> itemList;

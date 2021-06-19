@@ -1,6 +1,7 @@
 package ru.realityfamily.pandorabackend.shared.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Document(collection = "category")
 public class Category {
     @Id
@@ -19,6 +21,11 @@ public class Category {
     private String description;
     @DBRef
     private List<Subcategory> subcategorys;
+
+    public Category(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 
     public Category(String title, String description, List<Subcategory> subcategorys) {
         this.title = title;
