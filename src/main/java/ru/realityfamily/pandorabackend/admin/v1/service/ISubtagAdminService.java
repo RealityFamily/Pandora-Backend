@@ -1,6 +1,7 @@
 package ru.realityfamily.pandorabackend.admin.v1.service;
 
 import com.sun.istack.NotNull;
+import ru.realityfamily.pandorabackend.admin.v1.dto.SubtagWithDescriptionDTO;
 import ru.realityfamily.pandorabackend.shared.models.Subtag;
 
 public interface ISubtagAdminService {
@@ -11,4 +12,6 @@ public interface ISubtagAdminService {
     Subtag updateSubtagById(@NotNull Subtag subtag,@NotNull String subtagId);
 
     void deleteSubtag(@NotNull String subtagId);
+
+    SubtagWithDescriptionDTO getSubtagDetailedById(String subtagId);
 }

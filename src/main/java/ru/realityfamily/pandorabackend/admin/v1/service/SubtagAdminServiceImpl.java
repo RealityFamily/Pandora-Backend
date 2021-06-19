@@ -4,6 +4,8 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import ru.realityfamily.pandorabackend.admin.v1.dto.SubcategoryWithDescriptionDTO;
+import ru.realityfamily.pandorabackend.admin.v1.dto.SubtagWithDescriptionDTO;
 import ru.realityfamily.pandorabackend.shared.models.Subcategory;
 import ru.realityfamily.pandorabackend.shared.models.Subtag;
 import ru.realityfamily.pandorabackend.shared.repository.SubcategoryRepository;
@@ -39,5 +41,11 @@ public class SubtagAdminServiceImpl implements ISubtagAdminService {
     @Override
     public void deleteSubtag(String subtagId) { // dont forget remove items
         subtagRepository.deleteById(subtagId);
+    }
+
+    @Override
+    public SubtagWithDescriptionDTO getSubtagDetailedById(String subtagId) {
+        Subtag subtag = subtagRepository.findById(subtagId).orElseThrow();
+        return new SubtagWithDescriptionDTO(subtag);
     }
 }

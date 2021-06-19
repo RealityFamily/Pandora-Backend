@@ -13,6 +13,7 @@ import ru.realityfamily.pandorabackend.user.v1.service.ISubtagClientService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -43,8 +44,10 @@ public class SubtagClientController {
 
     private List<ItemCardShortDTO> convertAllItemToItemCardShortDTO(List<Item> itemList) {
         List<ItemCardShortDTO> itemCardShortDTOS = new ArrayList<>();
-        for (Item i : itemList) {
-            itemCardShortDTOS.add(convertItemToItemCardShortDTO(i));
+        if (itemList != null) {
+            for (Item i : itemList) {
+                itemCardShortDTOS.add(convertItemToItemCardShortDTO(i));
+            }
         }
         return itemCardShortDTOS;
     }

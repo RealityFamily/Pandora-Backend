@@ -16,7 +16,7 @@ public class ItemClientServiceImpl implements IItemClientService{
 
     @Override
     public Item getItemById(String id) {
-        return  itemRepository.findById(id).get();
+        return  itemRepository.findById(id).orElseThrow();
     }
 
     @Override

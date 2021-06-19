@@ -2,7 +2,8 @@ package ru.realityfamily.pandorabackend.admin.v1.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.realityfamily.pandorabackend.admin.v1.dto.CategoryDTO;
+import ru.realityfamily.pandorabackend.admin.v1.dto.CategoryWithDescriptionDTO;
+import ru.realityfamily.pandorabackend.admin.v1.dto.selectable.CategoryDTO;
 import ru.realityfamily.pandorabackend.shared.models.Category;
 import ru.realityfamily.pandorabackend.shared.repository.CategoryRepository;
 
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
-public class CategoryAdminService implements ICategoryAdminService {
+public class CategoryAdminServiceImpl implements ICategoryAdminService {
     CategoryRepository categoryRepository;
 
     @Override
@@ -51,6 +52,18 @@ public class CategoryAdminService implements ICategoryAdminService {
                 orElseThrow(() -> new NoSuchElementException(id));
         return editableCategory;
     }
+
+    @Override
+    public CategoryWithDescriptionDTO getCategoryDetailedById(String categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow();
+        return new CategoryWithDescriptionDTO(category);
+    }
+
+    @Override
+    public List<Category> getCategorysAllDetailed() {
+        return categoryRepository.findAll();
+    }
+
 
 
 }

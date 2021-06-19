@@ -2,6 +2,7 @@ package ru.realityfamily.pandorabackend.admin.v1.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.realityfamily.pandorabackend.admin.v1.dto.SubtagWithDescriptionDTO;
 import ru.realityfamily.pandorabackend.admin.v1.service.ISubtagAdminService;
 import ru.realityfamily.pandorabackend.shared.models.Subtag;
 
@@ -10,6 +11,12 @@ import ru.realityfamily.pandorabackend.shared.models.Subtag;
 @RequestMapping("api/v1/admin")
 public class SubtagAdminController {
     ISubtagAdminService subtagAdminService;
+
+    @GetMapping("/subtag/{subtagId}")
+    SubtagWithDescriptionDTO getSubcategoryDetailed(@PathVariable String subtagId){
+        SubtagWithDescriptionDTO subtag = subtagAdminService.getSubtagDetailedById(subtagId);
+        return subtag;
+    }
 
     @PostMapping("/subtag/add/to/{subcategoryId}")
     Subtag postSubtag(@PathVariable String subcategoryId, @RequestBody Subtag subtag){

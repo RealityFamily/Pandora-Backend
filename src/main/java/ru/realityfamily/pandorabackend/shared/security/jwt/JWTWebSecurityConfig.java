@@ -61,8 +61,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
     @Override
     public void addCorsMappings(CorsRegistry registry) { // allowed cors origins
         registry.addMapping("/**")
-                .allowedOrigins(allowedRestCors)
-                .allowedMethods("*");
+                .allowedOrigins(allowedRestCors);
+                //.allowedMethods("*");
     }
 
     @Override
@@ -92,6 +92,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
                         HttpMethod.POST,
                         authenticationPath
                 )
+                .and()
+                .ignoring()
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .and()
                 .ignoring()

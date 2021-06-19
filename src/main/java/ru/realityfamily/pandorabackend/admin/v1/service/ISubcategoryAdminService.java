@@ -1,5 +1,6 @@
 package ru.realityfamily.pandorabackend.admin.v1.service;
 
+import ru.realityfamily.pandorabackend.admin.v1.dto.SubcategoryWithDescriptionDTO;
 import ru.realityfamily.pandorabackend.shared.models.Subcategory;
 
 public interface ISubcategoryAdminService {
@@ -9,4 +10,6 @@ public interface ISubcategoryAdminService {
     Subcategory updateSubcategoryFields(Subcategory subcategory, String subcategoryId);
 
     void deleteSubcategory(String subcategoryId);
+
+    SubcategoryWithDescriptionDTO getSubcategoryDetailedById(String subcategoryId);
 }

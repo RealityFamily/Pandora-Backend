@@ -1,4 +1,4 @@
-package ru.realityfamily.pandorabackend.admin.v1.dto;
+package ru.realityfamily.pandorabackend.admin.v1.dto.selectable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

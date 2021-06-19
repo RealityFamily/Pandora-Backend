@@ -2,6 +2,8 @@ package ru.realityfamily.pandorabackend.admin.v1.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.realityfamily.pandorabackend.admin.v1.dto.CategoryWithDescriptionDTO;
+import ru.realityfamily.pandorabackend.admin.v1.dto.SubcategoryWithDescriptionDTO;
 import ru.realityfamily.pandorabackend.shared.models.Category;
 import ru.realityfamily.pandorabackend.shared.models.Subcategory;
 import ru.realityfamily.pandorabackend.shared.models.Subtag;
@@ -56,5 +58,11 @@ public class SubcategoryAdminServiceImpl implements ISubcategoryAdminService {
     @Override
     public void deleteSubcategory(String subcategoryId) {
         subcategoryRepository.deleteById(subcategoryId);
+    }
+
+    @Override
+    public SubcategoryWithDescriptionDTO getSubcategoryDetailedById(String subcategoryId) throws NoSuchElementException{
+        Subcategory subcategory = subcategoryRepository.findById(subcategoryId).orElseThrow();
+        return new SubcategoryWithDescriptionDTO(subcategory);
     }
 }
