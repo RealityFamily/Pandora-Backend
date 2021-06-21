@@ -35,7 +35,8 @@ public class ItemClientController {
     getItemSmallPhotoByItemId(@PathVariable("item_id") String itemId) throws IllegalStateException, IOException {
         Item selectedItem = itemClientService.getItemById(itemId);
         Photo photo = photoService.getPhoto(selectedItem.getMiniPhotoGridFsFileIds().iterator().next()); // TODO: refactor. It's not good because get's only first element from set
-        return photo.getStream().readAllBytes();
+        byte[] bytes = photo.getStream().readAllBytes();
+        return bytes;
     }
 
     @GetMapping(value = "item/{item_id}/photo/large", produces = MediaType.IMAGE_JPEG_VALUE)

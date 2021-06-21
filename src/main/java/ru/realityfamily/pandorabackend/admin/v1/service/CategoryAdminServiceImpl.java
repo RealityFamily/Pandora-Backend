@@ -7,6 +7,7 @@ import ru.realityfamily.pandorabackend.admin.v1.dto.selectable.CategoryDTO;
 import ru.realityfamily.pandorabackend.shared.models.Category;
 import ru.realityfamily.pandorabackend.shared.repository.CategoryRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CategoryAdminServiceImpl implements ICategoryAdminService {
     CategoryRepository categoryRepository;
+    ISubcategoryAdminService subcategoryAdminService;
 
     @Override
     public List<CategoryDTO> getAllCategorysInAntdCascaderForm() {
@@ -28,7 +30,10 @@ public class CategoryAdminServiceImpl implements ICategoryAdminService {
     }
 
     @Override
-    public void deleteCategory(String id) {
+    public void deleteCategory(String id) throws NoSuchElementException{
+        Optional.ofNullable(categoryRepository.findById(id).orElseThrow().getSubcategorys()).orElse(new ArrayList<>()).stream().forEach(subcategory -> {
+            subcategoryAdminService.deleteSubcategory(subcategory.getId());
+        });
         categoryRepository.deleteById(id);
     }
 

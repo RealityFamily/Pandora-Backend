@@ -6,11 +6,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.realityfamily.pandorabackend.admin.v1.dto.SubcategoryWithDescriptionDTO;
 import ru.realityfamily.pandorabackend.admin.v1.dto.SubtagWithDescriptionDTO;
+import ru.realityfamily.pandorabackend.shared.models.Item;
 import ru.realityfamily.pandorabackend.shared.models.Subcategory;
 import ru.realityfamily.pandorabackend.shared.models.Subtag;
 import ru.realityfamily.pandorabackend.shared.repository.SubcategoryRepository;
 import ru.realityfamily.pandorabackend.shared.repository.SubtagRepository;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class SubtagAdminServiceImpl implements ISubtagAdminService {
     SubtagRepository subtagRepository;
     SubcategoryRepository subcategoryRepository;
+    IItemAdminService itemAdminService;
 
     @Override
     public Subtag addSubtagToSubcategoryByID(@NotNull String subcategoryId,@NotNull Subtag subtag) throws NoSuchElementException {
@@ -39,7 +42,11 @@ public class SubtagAdminServiceImpl implements ISubtagAdminService {
     }
 
     @Override
-    public void deleteSubtag(String subtagId) { // dont forget remove items
+    public void deleteSubtag(String subtagId) throws NoSuchElementException{
+        Subtag subtag = subtagRepository.findById(subtagId).orElseThrow();
+        Optional.ofNullable(subtag.getItemList()).orElse(new ArrayList<>()).forEach(item -> {
+            itemAdminService.deleteItem(item.getId());
+        });
         subtagRepository.deleteById(subtagId);
     }
 

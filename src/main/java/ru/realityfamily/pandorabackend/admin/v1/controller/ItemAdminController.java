@@ -15,6 +15,7 @@ import ru.realityfamily.pandorabackend.shared.models.gridfs.service.PhotoService
 import ru.realityfamily.pandorabackend.shared.repository.ItemRepository;
 import ru.realityfamily.pandorabackend.shared.repository.SubtagRepository;
 import ru.realityfamily.pandorabackend.shared.repository.UserRepository;
+import ru.realityfamily.pandorabackend.user.v1.DTO.ItemCardLongDTO;
 
 import java.io.IOException;
 import java.util.Set;
@@ -39,10 +40,14 @@ public class ItemAdminController {
         return itemAdminService.addNewItem(itemName, itemDescription, modelAccessStrategy, photoLarge, photoSmall, model3d, subtagId, authorId);
     }
 
+    @DeleteMapping("/item/delete/{id}")
+    public void deleteItem(@PathVariable String id){
+        itemAdminService.deleteItem(id);
+    }
 
 
     @PutMapping("item/update/{itemId}")
-    public Item updateItem( @RequestParam String itemId, @RequestBody Item item){
-        return null; // TODO
+    public ItemCardLongDTO updateItem(@PathVariable String itemId, @RequestBody ItemCardLongDTO item){
+        return itemAdminService.updateItem(itemId,item);
     }
 }

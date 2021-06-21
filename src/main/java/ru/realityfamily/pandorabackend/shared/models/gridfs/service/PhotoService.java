@@ -55,5 +55,10 @@ public class PhotoService {
         return id.toString();
     }
 
+    public void deletePhoto(String id){
+        Query query = new Query(Criteria.where("_id").is(id));
+        gridFsTemplate.delete(query);
+    }
+
 
 }

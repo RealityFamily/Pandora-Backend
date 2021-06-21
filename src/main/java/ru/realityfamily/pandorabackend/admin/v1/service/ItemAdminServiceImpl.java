@@ -13,10 +13,10 @@ import ru.realityfamily.pandorabackend.shared.models.gridfs.service.PhotoService
 import ru.realityfamily.pandorabackend.shared.repository.ItemRepository;
 import ru.realityfamily.pandorabackend.shared.repository.SubtagRepository;
 import ru.realityfamily.pandorabackend.shared.repository.UserRepository;
+import ru.realityfamily.pandorabackend.user.v1.DTO.ItemCardLongDTO;
 
 import java.io.IOException;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Component
 @AllArgsConstructor
@@ -28,7 +28,7 @@ public class ItemAdminServiceImpl implements IItemAdminService {
     private SubtagRepository subtagRepository;
 
     @Override
-    public Item addNewItem(String itemName, String itemDescription, ModelAccessStrategy modelAccessStrategy, MultipartFile photoLarge, MultipartFile photoSmall, MultipartFile model3d, String subtagId, String authorId) throws IOException {
+    public Item addNewItem(String itemName, String itemDescription, ModelAccessStrategy modelAccessStrategy, MultipartFile photoLarge, MultipartFile photoSmall, MultipartFile model3d, String subtagId, String authorId) throws IOException, NoSuchElementException {
         String photoSmallId = photoService.addPhoto(itemName + "_small", photoSmall, PhotoSize.Small);
         String photoLargeId = photoService.addPhoto(itemName + "_large", photoLarge, PhotoSize.Large);
         String model3dId = model3dService.addModel3d(itemName + "_3dModel", model3d);
@@ -54,11 +54,43 @@ public class ItemAdminServiceImpl implements IItemAdminService {
         item = itemRepository.save(item);
 
         Subtag subtag = subtagRepository.findById(subtagId).get();
-        subtag.getItemList().add(item);
+        List<Item> itemList = Optional.ofNullable(subtag.getItemList()).orElse(new ArrayList<>());
+        itemList.add(item);
+        subtag.setItemList(itemList);
         subtagRepository.save(subtag);
 
-        //// TODO: refactor it to service layer
-
         return item;
+    }
+
+    @Override
+    public void deleteItem(String id) throws NoSuchElementException {
+        Item itemFound = itemRepository.findById(id).orElseThrow();
+        if (itemFound.getMiniPhotoGridFsFileIds() != null) {
+            itemFound.getModelGridFsFileIds().stream().forEach(model -> {
+                model3dService.deleteModel(model);
+            });
+        }
+        if (itemFound.getPhotoGridFsFileIds() != null) {
+            itemFound.getPhotoGridFsFileIds().stream().forEach(photoLarge -> {
+                photoService.deletePhoto(photoLarge);
+            });
+        }
+        if (itemFound.getMiniPhotoGridFsFileIds() != null) {
+            itemFound.getMiniPhotoGridFsFileIds().stream().forEach(photoSmall -> {
+                photoService.deletePhoto(photoSmall);
+            });
+        }
+
+        itemRepository.deleteById(id);
+    }
+
+    @Override
+    public ItemCardLongDTO updateItem(String itemId, ItemCardLongDTO item) throws NoSuchElementException{ // now supported only name and description mutating
+        if(item != null){
+            Item itemFound = itemRepository.findById(itemId).orElseThrow();
+            itemFound.setName(Optional.ofNullable(item.getName()).orElse(""));
+            itemFound.setDescription(Optional.ofNullable(item.getDescription()).orElse(""));
+            return new ItemCardLongDTO(itemRepository.save(itemFound));
+        } else throw new NoSuchElementException("Get item, and it was null");
     }
 }

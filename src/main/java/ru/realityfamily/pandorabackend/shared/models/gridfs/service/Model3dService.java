@@ -48,4 +48,9 @@ public class Model3dService {
         return id.toString();
     }
 
+    public void deleteModel(String id){
+        Query query = new Query(Criteria.where("_id").is(id));
+        gridFsTemplate.delete(query);
+    }
+
 }

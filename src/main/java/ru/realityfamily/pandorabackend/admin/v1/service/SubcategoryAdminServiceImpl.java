@@ -20,6 +20,7 @@ public class SubcategoryAdminServiceImpl implements ISubcategoryAdminService {
     SubcategoryRepository subcategoryRepository;
     CategoryRepository categoryRepository;
     SubtagRepository subtagRepository;
+    ISubtagAdminService subtagAdminService;
 
     @Override
     public Subcategory addNewSubcategoryToCategory(Subcategory subcategory, String categoryId) throws NoSuchElementException {
@@ -56,7 +57,10 @@ public class SubcategoryAdminServiceImpl implements ISubcategoryAdminService {
     }
 
     @Override
-    public void deleteSubcategory(String subcategoryId) {
+    public void deleteSubcategory(String subcategoryId) throws NoSuchElementException{
+        Optional.ofNullable(subcategoryRepository.findById(subcategoryId).orElseThrow().getInlineInterfaceTag()).orElse(new ArrayList<>()).stream().forEach(subtag -> {
+            subtagAdminService.deleteSubtag(subtag.getId());
+        });
         subcategoryRepository.deleteById(subcategoryId);
     }
 

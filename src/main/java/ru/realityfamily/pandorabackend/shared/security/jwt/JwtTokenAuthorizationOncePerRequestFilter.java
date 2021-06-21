@@ -52,7 +52,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
         String requestURI = request.getRequestURI();
 
-       if(!requestURI.equals(getTokenUrl)) {
+       if(!requestURI.equals(getTokenUrl) && !request.getMethod().equals("OPTIONS")) {
             if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
                 jwtToken = requestTokenHeader.substring(7);
                 try {
@@ -62,7 +62,8 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
                 } catch (ExpiredJwtException e) {
                     logger.warn("JWT_TOKEN_EXPIRED", e);
                 }
-            } else {
+            }
+            else {
                 logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
             }
         }
