@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +28,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    @Qualifier("database")
     private UserDetailsService jwtInMemoryUserDetailsService;
     
     @Autowired
@@ -52,7 +54,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
         String requestURI = request.getRequestURI();
 
-       if(!requestURI.equals(getTokenUrl) && !request.getMethod().equals("OPTIONS")) {
+       if(!requestURI.equals(getTokenUrl) && !request.getMethod().equals("OPTIONS") && !requestURI.equals("/user/registration")) {
             if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
                 jwtToken = requestTokenHeader.substring(7);
                 try {

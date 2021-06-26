@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,7 @@ public class JwtAuthenticationRestController {
   private JwtTokenUtil jwtTokenUtil;
 
   @Autowired
+  @Qualifier("database")
   private UserDetailsService jwtInMemoryUserDetailsService;
 
   @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
@@ -48,7 +50,7 @@ public class JwtAuthenticationRestController {
 
     final String token = jwtTokenUtil.generateToken(userDetails);
 
-    String username = authenticationRequest.getUsername();
+    String username = userDetails.getUsername();
 
     JwtTokenResponse response = new JwtTokenResponse(token, username);
 

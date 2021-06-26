@@ -23,6 +23,7 @@ public class UserClientServiceImpl implements IUserClientService {
             throw new UserAlreadyExistException("There is an account with that email address: " + userDto.getEmail());
         }
 
+        // the rest registration operation
         User user = new User();
         user.setNickname(userDto.getNickName());
         user.setMail(userDto.getEmail());
@@ -30,7 +31,7 @@ public class UserClientServiceImpl implements IUserClientService {
         password = new BCryptPasswordEncoder().encode(password);
         user.setPasswordHash(password);
         user.setRole(Arrays.asList(Role.User));
-        // the rest registration operation
+
         return userRepository.save(user);
     }
 

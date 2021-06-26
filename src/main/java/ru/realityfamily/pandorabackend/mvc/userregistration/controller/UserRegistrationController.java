@@ -1,5 +1,6 @@
 package ru.realityfamily.pandorabackend.mvc.userregistration.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
+@AllArgsConstructor
 public class UserRegistrationController {
     IUserClientService userClientService;
 

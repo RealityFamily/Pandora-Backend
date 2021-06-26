@@ -1,6 +1,7 @@
 package ru.realityfamily.pandorabackend.shared.security.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
     @Autowired
     private JwtUnAuthorizedResponseAuthenticationEntryPoint jwtUnAuthorizedResponseAuthenticationEntryPoint;
 
+    @Qualifier("database")
     @Autowired
     private UserDetailsService jwtInMemoryUserDetailsService;
 
@@ -99,14 +101,14 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
                 .ignoring()
                 .antMatchers(
                         HttpMethod.GET,
-                        "/", "/api/v1/admin/*", "/api/v1/admin/item/upload", "/styles/**", "/favicon.ico" //Other Stuff You want to Ignore
+                        "/", "/api/v1/admin/*", "/api/v1/admin/item/upload", "/styles/**", "/favicon.ico", "/user/registration" //Other Stuff You want to Ignore
                 )
                 .and()
                 .ignoring()
                 .antMatchers("/h2-console/**/**") //Should not be in Production!
                 .and()
                 .ignoring()
-                .antMatchers(HttpMethod.POST, "/api/v1/admin/item/add");
+                .antMatchers(HttpMethod.POST, "/api/v1/admin/item/add", "/user/registration");
     }
 }
 

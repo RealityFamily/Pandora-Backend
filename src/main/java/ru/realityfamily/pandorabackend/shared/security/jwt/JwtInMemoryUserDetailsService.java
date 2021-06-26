@@ -1,24 +1,23 @@
 package ru.realityfamily.pandorabackend.shared.security.jwt;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("inmemory")
 public class JwtInMemoryUserDetailsService implements UserDetailsService {
 
   static List<JwtUserDetails> inMemoryUserList = new ArrayList<>();
 
   static {
     //System.out.println(new BCryptPasswordEncoder().encode("admin"));
-    inMemoryUserList.add(new JwtUserDetails(1L, "admin",
-        "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", "ROLE_USER_2"));
+    inMemoryUserList.add(new JwtUserDetails("1", "admin",
+        "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", Arrays.asList("ROLE_USER_2")));
   }
 
   @Override

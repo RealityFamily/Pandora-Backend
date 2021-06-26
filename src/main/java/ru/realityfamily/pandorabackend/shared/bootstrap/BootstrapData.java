@@ -68,11 +68,11 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
     }
 
     private void loadAllDebugUsers(){
-        admin = new User("realityfamilyteam@yandex.ru","realityfamily", "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", Role.Admin);
+        admin = new User("realityfamilyteam@yandex.ru","realityfamily", "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", Arrays.asList(Role.Admin));
         admin.setId("607300ddbd25bf1b1101561b");
         saveIfNotExist(admin, userRepository);
 
-        testUser = new User("test@gmail.com", "testUser", "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", Role.User);
+        testUser = new User("test@gmail.com", "testUser", "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", Arrays.asList(Role.User));
         testUser.setId("607300ddbd25bf1b1101561c");
         saveIfNotExist(testUser, userRepository);
 
