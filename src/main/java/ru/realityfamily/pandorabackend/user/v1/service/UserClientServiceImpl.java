@@ -22,6 +22,9 @@ public class UserClientServiceImpl implements IUserClientService {
         if (emailExist(userDto.getEmail())) {
             throw new UserAlreadyExistException("There is an account with that email address: " + userDto.getEmail());
         }
+        if(nicknameExist(userDto.getNickName())){
+            throw new UserAlreadyExistException("There is an account with that login address: " + userDto.getNickName());
+        }
 
         // the rest registration operation
         User user = new User();
@@ -33,6 +36,10 @@ public class UserClientServiceImpl implements IUserClientService {
         user.setRole(Arrays.asList(Role.User));
 
         return userRepository.save(user);
+    }
+
+    private boolean nicknameExist(String nickName) {
+        return userRepository.findByNickname(nickName).isPresent();
     }
 
     public boolean emailExist(String email) {
