@@ -17,7 +17,7 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
   static {
     //System.out.println(new BCryptPasswordEncoder().encode("admin"));
     inMemoryUserList.add(new JwtUserDetails("1", "admin",
-        "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", Arrays.asList("ROLE_USER_2")));
+        "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", Arrays.asList("ROLE_USER_2"), true));
   }
 
   @Override

@@ -13,15 +13,18 @@ import java.util.Set;
 @Getter
 @Document(collection = "users")
 public class User extends BaseMongoTemplate{
-    String mail;
-    String nickname;
-    String passwordHash;
-    List<Role> role;
+    private String mail;
+    private String nickname;
+    private String passwordHash;
+    private List<Role> role;
+
+    private boolean enabled;
 
     @DBRef
     Set<Item> assignedItems;
 
     public User() {
+        this.enabled = false;
     }
 
     public User(String mail, String nickname, String passwordHash, List<Role> role) {
@@ -29,12 +32,14 @@ public class User extends BaseMongoTemplate{
         this.nickname = nickname;
         this.passwordHash = passwordHash;
         this.role = role;
+        this.enabled = false;
     }
 
     public User(String mail, String nickname, String passwordHash) {
         this.mail = mail;
         this.nickname = nickname;
         this.passwordHash = passwordHash;
+        this.enabled = false;
     }
 
 /*    public User(String mail, Long passwordHash) {

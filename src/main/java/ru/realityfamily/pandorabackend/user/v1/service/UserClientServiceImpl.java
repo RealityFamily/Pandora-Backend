@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import ru.realityfamily.pandorabackend.mvc.userregistration.dto.UserDto;
 import ru.realityfamily.pandorabackend.shared.models.Role;
 import ru.realityfamily.pandorabackend.shared.models.User;
+import ru.realityfamily.pandorabackend.shared.models.VerificationToken;
 import ru.realityfamily.pandorabackend.shared.repository.UserRepository;
+import ru.realityfamily.pandorabackend.shared.repository.VerificationTokenRepository;
 import ru.realityfamily.pandorabackend.user.v1.service.exceptions.UserAlreadyExistException;
 
 import java.util.Arrays;
@@ -16,6 +18,8 @@ import java.util.Arrays;
 public class UserClientServiceImpl implements IUserClientService {
 
     private UserRepository userRepository;
+
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Override
     public User registerNewUserAccount(UserDto userDto) throws UserAlreadyExistException {
@@ -36,6 +40,28 @@ public class UserClientServiceImpl implements IUserClientService {
         user.setRole(Arrays.asList(Role.User));
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public User getUser(String verificationToken) {
+        User user = verificationTokenRepository.findByToken(verificationToken).getUser();
+        return user;
+    }
+
+    @Override
+    public void createVerificationToken(User user, String token) {
+        VerificationToken anotherToken = new VerificationToken(token,user);
+        verificationTokenRepository.save(anotherToken);
+    }
+
+    @Override
+    public VerificationToken getVerificationToken(String token) {
+        return verificationTokenRepository.findByToken(token);
+    }
+
+    @Override
+    public void saveRegistredUser(User user) {
+        userRepository.save(user);
     }
 
     private boolean nicknameExist(String nickName) {

@@ -27,7 +27,7 @@ public class JwtPersistenceUserDetailsService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Optional<User> userOpt = userRepository.findByNickname(username);
-    if (!userOpt.isPresent()){
+    if (!userOpt.isPresent()){ // only for email and username auth
       userOpt = userRepository.findByMail(username);
     }
     if(!userOpt.isPresent()) {
@@ -37,7 +37,7 @@ public class JwtPersistenceUserDetailsService implements UserDetailsService {
 
     return new JwtUserDetails(user.getId(), user.getNickname(), user.getPasswordHash(), user.getRole().stream().map(role -> {
       return (role.name());
-    }).collect(Collectors.toList()) );
+    }).collect(Collectors.toList()), user.isEnabled() );
 
   }
 

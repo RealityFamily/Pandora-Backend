@@ -18,8 +18,9 @@ public class JwtUserDetails implements UserDetails {
   private final String username;
   private final String password;
   private final Collection<? extends GrantedAuthority> authorities;
+  private boolean enabled = false;
 
-  public JwtUserDetails(String id, String username, String password, List<String> roles) {
+  public JwtUserDetails(String id, String username, String password, List<String> roles, boolean enabled) {
     this.id = id;
     this.username = username;
     this.password = password;
@@ -30,6 +31,8 @@ public class JwtUserDetails implements UserDetails {
     }
 
     this.authorities = authorities;
+
+    this.enabled = enabled;
   }
 
   @JsonIgnore
@@ -73,7 +76,7 @@ public class JwtUserDetails implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return this.enabled;
   }
 
 }
