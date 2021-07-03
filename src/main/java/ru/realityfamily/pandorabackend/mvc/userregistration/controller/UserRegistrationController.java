@@ -97,6 +97,6 @@ public class UserRegistrationController {
 
         user.setEnabled(true);
         userClientService.saveRegistredUser(user);
-        return "redirect:/login.html";
+        return "redirect:/";
     }
 }
