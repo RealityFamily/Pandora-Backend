@@ -101,7 +101,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
                 .ignoring()
                 .antMatchers(
                         HttpMethod.GET,
-                        "/", "/api/v1/admin/*", "/api/v1/admin/item/upload", "/styles/**", "/favicon.ico", "/user/registration", "/registrationConfirm/**"//Other Stuff You want to Ignore
+                        "/", "/api/v1/admin/*", "/api/v1/admin/item/upload", "/styles/**", "/favicon.ico", "/user/registration", "/registrationConfirm/**", "/resources/**" //Other Stuff You want to Ignore
                 )
                 .and()
                 .ignoring()

@@ -1,12 +1,6 @@
 package ru.realityfamily.pandorabackend.shared.security.jwt;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +14,11 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import io.jsonwebtoken.ExpiredJwtException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Component
 public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFilter {
@@ -30,10 +28,10 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     @Autowired
     @Qualifier("database")
     private UserDetailsService jwtInMemoryUserDetailsService;
-    
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-    
+
     @Value("${jwt.http.request.header}")
     private String tokenHeader;
 
@@ -54,18 +52,24 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
         String requestURI = request.getRequestURI();
 
-       if(!requestURI.equals(getTokenUrl) && !request.getMethod().equals("OPTIONS") && !requestURI.equals("/user/registration")) {
-            if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-                jwtToken = requestTokenHeader.substring(7);
-                try {
-                    username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-                } catch (IllegalArgumentException e) {
-                    logger.error("JWT_TOKEN_UNABLE_TO_GET_USERNAME", e);
-                } catch (ExpiredJwtException e) {
-                    logger.warn("JWT_TOKEN_EXPIRED", e);
+        if(!requestURI.contains("/api/")){ // all resources and others that not api should be ignored
+            chain.doFilter(request, response);
+            return;
+        }
+
+        if (!requestURI.equals(getTokenUrl) && !request.getMethod().equals("OPTIONS")) {
+            if ( requestURI.contains("/api/")) { // все что ходит в api должно пройти тут
+                if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+                    jwtToken = requestTokenHeader.substring(7);
+                    try {
+                        username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                    } catch (IllegalArgumentException e) {
+                        logger.error("JWT_TOKEN_UNABLE_TO_GET_USERNAME", e);
+                    } catch (ExpiredJwtException e) {
+                        logger.warn("JWT_TOKEN_EXPIRED", e);
+                    }
                 }
-            }
-            else {
+            } else {
                 logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
             }
         }
