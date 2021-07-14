@@ -49,6 +49,7 @@ public class UserRegistrationController {
             HttpServletRequest request,
             Errors errors,
             BindingResult bindingResult) throws Exception{
+        Locale locale = request.getLocale();
 
         if(bindingResult.hasErrors()){
             ModelAndView modelErrorValidation = new ModelAndView("registration");
@@ -65,7 +66,7 @@ public class UserRegistrationController {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registred, request.getLocale(), appUrl));
         } catch (UserAlreadyExistException uaeEx) {
             ModelAndView mav = new ModelAndView("registration", "user", userDto);
-            mav.addObject("message", "Аккаунт с таким именем или email уже существует");
+            mav.addObject("message", /*"Аккаунт пользователя с таким именем/почтой уже существует");*/ messages.getMessage("UniqueUsername.user.username", null, locale));
             return mav;
         } catch (RuntimeException ex) {
             ex.printStackTrace();
