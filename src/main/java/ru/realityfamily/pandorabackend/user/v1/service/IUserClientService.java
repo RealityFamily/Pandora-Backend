@@ -6,7 +6,7 @@ import ru.realityfamily.pandorabackend.shared.models.VerificationToken;
 import ru.realityfamily.pandorabackend.user.v1.service.exceptions.UserAlreadyExistException;
 
 public interface IUserClientService {
-    User registerNewUserAccount(UserDto userDto) throws UserAlreadyExistException;
+    User registerNewUserAccount(UserDto userDto);
 
     User getUser(String verificationToken);
 

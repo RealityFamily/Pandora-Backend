@@ -1,6 +1,7 @@
 package ru.realityfamily.pandorabackend.user.v1.service;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.realityfamily.pandorabackend.mvc.userregistration.dto.UserDto;
@@ -11,9 +12,11 @@ import ru.realityfamily.pandorabackend.shared.repository.UserRepository;
 import ru.realityfamily.pandorabackend.shared.repository.VerificationTokenRepository;
 import ru.realityfamily.pandorabackend.user.v1.service.exceptions.UserAlreadyExistException;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserClientServiceImpl implements IUserClientService {
 
@@ -22,7 +25,7 @@ public class UserClientServiceImpl implements IUserClientService {
     private VerificationTokenRepository verificationTokenRepository;
 
     @Override
-    public User registerNewUserAccount(UserDto userDto) throws UserAlreadyExistException {
+    public User registerNewUserAccount(UserDto userDto){
         if (emailExist(userDto.getEmail())) {
             throw new UserAlreadyExistException("There is an account with that email address: " + userDto.getEmail());
         }
