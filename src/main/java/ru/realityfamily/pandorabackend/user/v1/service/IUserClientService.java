@@ -15,4 +15,6 @@ public interface IUserClientService {
     VerificationToken getVerificationToken(String token);
 
     void saveRegistredUser(User user);
+
+    String validateVerificationToken(String token);
 }

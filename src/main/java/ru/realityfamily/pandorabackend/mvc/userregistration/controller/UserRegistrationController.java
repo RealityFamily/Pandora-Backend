@@ -1,12 +1,14 @@
 package ru.realityfamily.pandorabackend.mvc.userregistration.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -28,74 +30,67 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 public class UserRegistrationController {
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private IUserClientService userClientService;
-    private ApplicationEventPublisher eventPublisher;
     private MessageSource messages;
     private IUserClientService userService;
 
-    @GetMapping("/user/registration")
+    @GetMapping("/registration")
     public String showRegistrationForm(WebRequest request, Model model) {
         UserDto userDto = new UserDto();
         model.addAttribute("user", userDto);
         return "registration";
     }
 
-    @PostMapping("/user/registration")
-    public GenericResponse registerUserAccount(@Valid final UserDto accountDto, final HttpServletRequest request){
-
-        Locale locale = request.getLocale();
-
-        LOGGER.debug("Registering user account with information: {}", accountDto);
-
-        String appUrl = request.getContextPath();
-        final User registered = userService.registerNewUserAccount(accountDto);
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
-        return new GenericResponse("success");
-
-//        try {
-//            User registred = userClientService.registerNewUserAccount(userDto);
-//
-//            String appUrl = request.getContextPath();
-//            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registred, request.getLocale(), appUrl));
-//        } catch (UserAlreadyExistException uaeEx) {
-//            ModelAndView mav = new ModelAndView("registration", "user", userDto);
-//            mav.addObject("message", /*"Аккаунт пользователя с таким именем/почтой уже существует");*/ messages.getMessage("UniqueUsername.user.username", null, locale));
-//            return mav;
-//        } catch (RuntimeException ex) {
-//            ex.printStackTrace();
-//            return new ModelAndView("emailError", "user", userDto);
-//        }
-//
-//        // rest of implementation
-//        return new ModelAndView("successRegister", "user", userDto);// delete this
-    }
 
     @GetMapping("/registrationConfirm")
-    public String confirmRegistration(WebRequest request, Model model, @RequestParam("token") String token) {
+    public ModelAndView confirmRegistration(WebRequest request, ModelMap model, @RequestParam("token") String token) {
         Locale locale = request.getLocale();
 
-        VerificationToken verificationToken = userClientService.getVerificationToken(token);
-        if (verificationToken == null) {
-            String message = messages.getMessage("auth.message.invalidToken", null, locale);
-            model.addAttribute("message", message);
-            return "redirect:/badUser.html";
+        String result = userClientService.validateVerificationToken(token);
+
+        if (result.equals("valid")) {
+
+            return new ModelAndView("redirect:/successVerified");
         }
 
-        User user = verificationToken.getUser();
-        Calendar cal = Calendar.getInstance();
-        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-            String messageValue = messages.getMessage("auth.message.expired", null, locale);
-            model.addAttribute("message", messageValue);
-            return "redirect:/badUser.html";
-        }
+        model.addAttribute("messageKey", "auth.message." + result);
+        model.addAttribute("expired", "expired".equals(result));
+        model.addAttribute("token", token);
+        return new ModelAndView("redirect:/badUser", model);
 
-        user.setEnabled(true);
-        userClientService.saveRegistredUser(user);
-        return "redirect:/";
+    }
+
+    @GetMapping("/badUser")
+    public ModelAndView badUser(final HttpServletRequest request, final ModelMap model, @RequestParam("messageKey" ) final Optional<String> messageKey, @RequestParam("expired" ) final Optional<String> expired, @RequestParam("token" ) final Optional<String> token) {
+
+        Locale locale = request.getLocale();
+        messageKey.ifPresent( key -> {
+                    String message = messages.getMessage(key, null, locale);
+                    model.addAttribute("message", message);
+                }
+        );
+
+        expired.ifPresent( e -> model.addAttribute("expired", e));
+        token.ifPresent( t -> model.addAttribute("token", t));
+
+        return new ModelAndView("badUser", model);
+    }
+
+    @GetMapping("/successRegister")
+    public ModelAndView registredSucssesfully(final HttpServletRequest request){
+        Locale locale = request.getLocale();
+        return new ModelAndView("successRegister");
+    }
+
+    @GetMapping("/successVerified")
+    public ModelAndView verifiedSuccessfully(final HttpServletRequest request){
+        Locale locale = request.getLocale();
+        return new ModelAndView("successVerified");
     }
 }

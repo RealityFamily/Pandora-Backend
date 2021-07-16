@@ -14,11 +14,16 @@ import ru.realityfamily.pandorabackend.user.v1.service.exceptions.UserAlreadyExi
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
+import java.util.Calendar;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class UserClientServiceImpl implements IUserClientService {
+
+    public static final String TOKEN_INVALID = "invalidToken";
+    public static final String TOKEN_EXPIRED = "expired";
+    public static final String TOKEN_VALID = "valid";
 
     private UserRepository userRepository;
 
@@ -65,6 +70,29 @@ public class UserClientServiceImpl implements IUserClientService {
     @Override
     public void saveRegistredUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public String validateVerificationToken(String token) {
+        final VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
+        if (verificationToken == null) {
+            return TOKEN_INVALID;
+        }
+
+        final User user = verificationToken.getUser();
+        final Calendar cal = Calendar.getInstance();
+        if ((verificationToken.getExpiryDate()
+                .getTime() - cal.getTime()
+                .getTime()) <= 0) {
+            verificationTokenRepository.delete(verificationToken);
+            return TOKEN_EXPIRED;
+        }
+
+        user.setEnabled(true);
+        verificationTokenRepository.delete(verificationToken);
+
+        userRepository.save(user);
+        return TOKEN_VALID;
     }
 
     private boolean nicknameExist(String nickName) {
