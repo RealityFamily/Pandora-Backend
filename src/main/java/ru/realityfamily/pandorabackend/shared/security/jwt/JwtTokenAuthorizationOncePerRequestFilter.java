@@ -52,13 +52,13 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
         String requestURI = request.getRequestURI();
 
-        if(!requestURI.contains("/api/")){ // all resources and others that not api should be ignored
+        if(!requestURI.contains("/api/") && !requestURI.contains("/refresh")){ // all resources and others that not api should be ignored
             chain.doFilter(request, response);
             return;
         }
 
         if (!requestURI.equals(getTokenUrl) && !request.getMethod().equals("OPTIONS")) {
-            if ( requestURI.contains("/api/")) { // все что ходит в api должно пройти тут
+            if ( requestURI.contains("/api/") || requestURI.contains("/refresh")) { // все что ходит в api должно пройти тут
                 if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
                     jwtToken = requestTokenHeader.substring(7);
                     try {
