@@ -3,6 +3,9 @@ package ru.realityfamily.pandorabackend.shared.bootstrap;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -10,6 +13,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.realityfamily.pandorabackend.shared.models.*;
@@ -18,7 +22,8 @@ import ru.realityfamily.pandorabackend.shared.repository.*;
 import java.io.File;
 import java.util.*;
 
-//@Component
+@Component
+@Slf4j
 public class BootstrapData implements ApplicationListener<ContextRefreshedEvent> {
 
     ItemRepository itemRepository;
@@ -26,24 +31,28 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
     CategoryRepository categoryRepository;
     SubcategoryRepository subcategoryRepository;
     SubtagRepository subtagRepository;
+    PasswordEncoder passwordEncoder;
+
     private User admin;
     private User testUser;
     private List<Item> debugItemList = new ArrayList<>();
 
-    public BootstrapData(ItemRepository itemRepository, UserRepository userRepository, CategoryRepository categoryRepository, SubcategoryRepository subcategoryRepository, SubtagRepository subtagRepository) {
+    public BootstrapData(ItemRepository itemRepository, UserRepository userRepository, CategoryRepository categoryRepository, SubcategoryRepository subcategoryRepository, SubtagRepository subtagRepository, PasswordEncoder passwordEncoder) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.subcategoryRepository = subcategoryRepository;
         this.subtagRepository = subtagRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
         loadAllDebugUsers();
-        loadItem();
-        loadAllDebugCategoriesAndSubcategories();
+
+        //loadItem();
+        //loadAllDebugCategoriesAndSubcategories();
     }
 
     private void loadItem(){
@@ -68,12 +77,15 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
     }
 
     private void loadAllDebugUsers(){
-        admin = new User("realityfamilyteam@yandex.ru","realityfamily", "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", Arrays.asList(Role.Admin));
+
+        admin = new User("realityfamilyteam@yandex.ru","realityfamily", passwordEncoder.encode("MicrosoftShit1997!"), Arrays.asList(Role.Admin)); // pass: admin
         admin.setId("607300ddbd25bf1b1101561b");
+        admin.setEnabled(true);
         saveIfNotExist(admin, userRepository);
 
-        testUser = new User("test@gmail.com", "testUser", "$2a$10$OAOb9zOPZe6GKVQXARCot.ApdBr297OU0orKRlIiz1hKHjhVrBUaK", Arrays.asList(Role.User));
+        testUser = new User("test@gmail.com", "testUser", passwordEncoder.encode("MicrosoftShit1997!"), Arrays.asList(Role.User)); // pass: admin
         testUser.setId("607300ddbd25bf1b1101561c");
+        testUser.setEnabled(true);
         saveIfNotExist(testUser, userRepository);
 
     }
