@@ -3,8 +3,6 @@ package ru.realityfamily.pandorabackend.shared.bootstrap;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,12 +76,12 @@ public class BootstrapData implements ApplicationListener<ContextRefreshedEvent>
 
     private void loadAllDebugUsers(){
 
-        admin = new User("realityfamilyteam@yandex.ru","realityfamily", passwordEncoder.encode("MicrosoftShit1997!"), Arrays.asList(Role.Admin)); // pass: admin
+        admin = new User("realityfamilyteam@yandex.ru","realityfamily", passwordEncoder.encode("MicrosoftShit1997!"), Arrays.asList(Role.ADMIN)); // pass: admin
         admin.setId("607300ddbd25bf1b1101561b");
         admin.setEnabled(true);
         saveIfNotExist(admin, userRepository);
 
-        testUser = new User("test@gmail.com", "testUser", passwordEncoder.encode("MicrosoftShit1997!"), Arrays.asList(Role.User)); // pass: admin
+        testUser = new User("test@gmail.com", "testUser", passwordEncoder.encode("MicrosoftShit1997!"), Arrays.asList(Role.USER)); // pass: admin
         testUser.setId("607300ddbd25bf1b1101561c");
         testUser.setEnabled(true);
         saveIfNotExist(testUser, userRepository);

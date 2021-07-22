@@ -1,7 +1,6 @@
 package ru.realityfamily.pandorabackend.user.v1.service;
 
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.realityfamily.pandorabackend.mvc.userregistration.dto.UserDto;
@@ -45,7 +44,7 @@ public class UserClientServiceImpl implements IUserClientService {
         String password = userDto.getPassword();
         password = new BCryptPasswordEncoder().encode(password);
         user.setPasswordHash(password);
-        user.setRole(Arrays.asList(Role.User));
+        user.setRole(Arrays.asList(Role.USER));
 
         return userRepository.save(user);
     }

@@ -41,7 +41,9 @@ public class CategoryClientController {
     //DTO's converters
     private List<SubcatFromCatDTO> convertCatToSubCatFromCatDTO(List<Subcategory> subcategories){
         List<SubcatFromCatDTO> subcatFromCatDTOS = new ArrayList<>();
+        if(subcategories != null){
         for( Subcategory s : subcategories) subcatFromCatDTOS.add(convertCatToSubCatFromCatDTO(s));
+        }
         return subcatFromCatDTOS;
     }
 

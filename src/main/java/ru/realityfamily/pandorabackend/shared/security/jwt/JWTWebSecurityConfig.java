@@ -4,19 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -31,7 +32,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
 
     @Qualifier("database")
     @Autowired
-    private UserDetailsService jwtInMemoryUserDetailsService;
+    private UserDetailsService customUserDetailsService;
 
     @Autowired
     private JwtTokenAuthorizationOncePerRequestFilter jwtAuthenticationTokenFilter;
@@ -45,7 +46,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(jwtInMemoryUserDetailsService)
+                .userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoderBean());
     }
 
@@ -74,6 +75,9 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
                 .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
+                .antMatchers("/api/v1/user/**").hasRole("USER")
+                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                //.antMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated();
 
 
@@ -101,14 +105,30 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
                 .ignoring()
                 .antMatchers(
                         HttpMethod.GET,
-                        "/", "/api/v1/admin/*", "/api/v1/admin/item/upload", "/styles/**", "/favicon.ico", "/registration/**", "/registrationConfirm/**", "/resources/**", "/successRegister/**", "/badUser/**", "/successVerified/**"//Other Stuff You want to Ignore
+                        "/", "/api/v1/admin/item/upload", "/styles/**", "/favicon.ico", "/registration/**", "/registrationConfirm/**", "/resources/**", "/successRegister/**", "/badUser/**", "/successVerified/**"//Other Stuff You want to Ignore
                 )
                 .and()
                 .ignoring()
                 .antMatchers("/h2-console/**/**") //Should not be in Production!
                 .and()
                 .ignoring()
-                .antMatchers(HttpMethod.POST, "/api/v1/admin/item/add", "/user/registration");
+                .antMatchers(HttpMethod.POST, "/user/registration");
+
+        DefaultWebSecurityExpressionHandler newExpressionHandler = new DefaultWebSecurityExpressionHandler();
+        newExpressionHandler.setRoleHierarchy(roleHierarchy());
+
+        webSecurity.expressionHandler(newExpressionHandler);
+
     }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        String hierarchy = "ROLE_ADMIN > ROLE_USER";
+        roleHierarchy.setHierarchy(hierarchy);
+        return roleHierarchy;
+    }
+
+
 }
 

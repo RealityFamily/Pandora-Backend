@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class JwtUserDetails implements UserDetails {
 
   private static final long serialVersionUID = 5155720064139820502L;
+  private static final String ROLE_PREFIX = "ROLE_";
 
   private final String id;
   private final String username;
@@ -27,7 +28,7 @@ public class JwtUserDetails implements UserDetails {
 
     List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
     for(String r : roles) {
-      authorities.add(new SimpleGrantedAuthority(r));
+      authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + r ));
     }
 
     this.authorities = authorities;
