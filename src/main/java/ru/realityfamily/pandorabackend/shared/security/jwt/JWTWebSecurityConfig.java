@@ -77,7 +77,6 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/**").hasRole("USER")
                 .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                //.antMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated();
 
 

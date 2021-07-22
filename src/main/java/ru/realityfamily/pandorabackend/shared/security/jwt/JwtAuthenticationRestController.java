@@ -1,5 +1,7 @@
 package ru.realityfamily.pandorabackend.shared.security.jwt;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.realityfamily.pandorabackend.shared.security.jwt.JwtTokenUtil;
 
 @RestController
 @CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200" })
@@ -52,7 +55,19 @@ public class JwtAuthenticationRestController {
 
     String username = userDetails.getUsername();
 
-    JwtTokenResponse response = new JwtTokenResponse(token, username);
+    String role = "";
+
+    Collection<? extends GrantedAuthority> ga =  userDetails.getAuthorities();
+
+    if(ga != null){
+     for(GrantedAuthority grantedAuthority : ga) {
+       role += grantedAuthority.getAuthority() + ";";
+     }
+    }
+
+
+
+    JwtTokenResponse response = new JwtTokenResponse(token, username, role);
 
     return ResponseEntity.ok(response);
   }
@@ -66,7 +81,16 @@ public class JwtAuthenticationRestController {
 
     if (jwtTokenUtil.canTokenBeRefreshed(token)) {
       String refreshedToken = jwtTokenUtil.refreshToken(token);
-      return ResponseEntity.ok(new JwtTokenResponse(refreshedToken, username));
+      String role = "";
+      Collection<? extends GrantedAuthority> ga =  user.getAuthorities();
+
+      if(ga != null){
+        for(GrantedAuthority grantedAuthority : ga) {
+          role += grantedAuthority.getAuthority() + ";";
+        }
+      }
+
+      return ResponseEntity.ok(new JwtTokenResponse(refreshedToken, username, role));
     } else {
       return ResponseEntity.badRequest().body(null);
     }
