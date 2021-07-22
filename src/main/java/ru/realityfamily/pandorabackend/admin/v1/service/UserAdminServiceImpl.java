@@ -50,4 +50,13 @@ public class UserAdminServiceImpl implements IUserAdminService {
             return user.get();
         } else return null;
     }
+
+    @Override
+    public User enableUser(String id, Boolean enabled) {
+        Optional<User> user = userRepository.findById(id);
+        User userUpdate = user.orElseThrow();
+
+        userUpdate.setEnabled(enabled);
+        return userRepository.save(userUpdate);
+    }
 }

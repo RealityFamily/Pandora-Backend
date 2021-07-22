@@ -17,4 +17,6 @@ public interface IUserAdminService {
     User createNewUser(User user);
 
     User foundUserByNickname(String nickname);
+
+    User enableUser(String id, Boolean enabled);
 }

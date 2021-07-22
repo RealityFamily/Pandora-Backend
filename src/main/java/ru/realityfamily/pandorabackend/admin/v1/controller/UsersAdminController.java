@@ -2,16 +2,14 @@ package ru.realityfamily.pandorabackend.admin.v1.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import ru.realityfamily.pandorabackend.admin.v1.service.IUserAdminService;
 import ru.realityfamily.pandorabackend.shared.models.Role;
 import ru.realityfamily.pandorabackend.shared.models.User;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +30,11 @@ public class UsersAdminController {
     @GetMapping("/users")
     List<User> getAllUsers(){
         return userAdminService.getAllUsers();
+    }
+
+    @PostMapping("/users/{id}/setEnabled")
+    User enableUserByAdmin(@PathVariable @NotNull String id, @RequestParam("enabled") @NotNull Boolean enabled){
+        return userAdminService.enableUser(id, enabled);
     }
 
     @GetMapping("users/search/{nameOrEmail}")
