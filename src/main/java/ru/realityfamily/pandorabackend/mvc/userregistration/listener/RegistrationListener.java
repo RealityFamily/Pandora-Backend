@@ -40,7 +40,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message+ "\r\n" + "https://pandora.dev.realityfamily.ru"+ confirmationUrl);
+        email.setText(message+ "\r\n" + "https://pandora.dev.realityfamily.ru"+ confirmationUrl);//TODO : Need to concatenate the server address from request, that not hardcoded
         mailSender.send(email);
     }
 }
