@@ -67,7 +67,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
                 .allowedOrigins(allowedRestCors)
                 .allowedMethods("*")
                 .allowedOrigins("https://pandora.dev.realityfamily.ru", "https://admin.pandora.dev.realityfamily.ru")
-                .allowedMethods("*");
+                .allowedMethods("*")
+                .allowedHeaders("*");
     }
 
     @Override
