@@ -65,6 +65,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
     public void addCorsMappings(CorsRegistry registry) { // allowed cors origins
         registry.addMapping("/**")
                 .allowedOrigins(allowedRestCors)
+                .allowedMethods("*")
+                .allowedOrigins("https://pandora.dev.realityfamily.ru")
                 .allowedMethods("*");
     }
 
