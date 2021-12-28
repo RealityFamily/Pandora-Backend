@@ -66,7 +66,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
         registry.addMapping("/**")
                 .allowedOrigins(allowedRestCors)
                 .allowedMethods("*")
-                .allowedOrigins("https://pandora.dev.realityfamily.ru", "https://admin.pandora.dev.realityfamily.ru")
+                .allowedOrigins("https://pandora.dev.realityfamily.ru", "https://admin.pandora.dev.realityfamily.ru", "http://admin.pandora.diskill.ru", "http://pandora.diskill.ru", "https://admin.pandora.diskill.ru", "https://pandora.diskill.ru")
                 .allowedMethods("*")
                 .allowedHeaders("*");
     }
